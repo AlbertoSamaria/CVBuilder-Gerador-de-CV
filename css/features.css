@@ -32,3 +32,28 @@ body.dark-mode .ats-results h3{color:#e2e8f0}
 body.dark-mode .ats-score-copy span,body.dark-mode .ats-metric span{color:#cbd5e1}
 @media(max-width:650px){.feature-panel{padding:12px}.feature-actions{display:grid;grid-template-columns:1fr}.feature-actions .btn{width:100%}}
 @media print{.feature-panel{display:none!important}}
+
+/* Correcções de consistência visual e preservação de dados */
+#cvTechnicalSkills,#cvMainLanguages{display:flex;flex-wrap:wrap;gap:7px}
+#cvTechnicalSkills .tag{font-size:10px;padding:5px 8px}
+#cvLanguagesSection .entry-desc{margin:3px 0}
+body.dark-mode{--bg:#0f172a;--panel:#182235;--text:#e5e7eb;--muted:#aab7ca;--border:#334155;background:#0f172a;color:#e5e7eb}
+body.dark-mode .app,body.dark-mode .editor{background:#111c2e}
+body.dark-mode .preview-area{background:#0b1220}
+body.dark-mode .form-section{border-color:#334155}
+body.dark-mode .section-title h2,body.dark-mode .style-help,body.dark-mode label{color:#e2e8f0}
+body.dark-mode input,body.dark-mode textarea,body.dark-mode select{background:#0f172a;border-color:#475569;color:#f8fafc}
+body.dark-mode input::placeholder,body.dark-mode textarea::placeholder{color:#94a3b8}
+body.dark-mode .progress-wrap,body.dark-mode .add-btn,body.dark-mode .icon-btn{background:#1e293b;border-color:#475569;color:#e2e8f0}
+body.dark-mode .style-option{background:#1e293b;border-color:#475569;color:#e2e8f0}
+body.dark-mode .style-option.active{border-color:#60a5fa;color:#93c5fd}
+body.dark-mode .preview-area .preview-toolbar{background:#182235;border-color:#334155;color:#e2e8f0}
+body.dark-mode .zoom-btn{background:#1e293b;border-color:#475569;color:#fff}
+body.dark-mode .feature-panel input:focus,body.dark-mode .feature-panel textarea:focus{box-shadow:0 0 0 3px rgba(96,165,250,.18)}
+body.dark-mode .ai-privacy{background:#0f172a;color:#cbd5e1}
+body.dark-mode .ai-sparkle{background:#263b60;color:#bfdbfe}
+@media(max-width:650px){
+  .top-actions #themeToggle{grid-column:1/-1}
+  .feature-list-item{align-items:flex-start;flex-direction:column}
+  .feature-list-item>div{display:flex;gap:6px}
+}
