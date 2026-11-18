@@ -7,6 +7,7 @@
   <title>CVBuilder — Gerador de Currículos</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/ats.css">
+  <link rel="stylesheet" href="css/features.css">
 </head>
 <body>
   <header class="topbar no-print">
@@ -22,6 +23,7 @@
       <button class="btn btn-light" id="saveBtn">Guardar</button>
       <button class="btn btn-primary" id="printBtn">Exportar PDF</button>
       <button class="btn btn-light" id="wordBtn" type="button">Exportar Word</button>
+      <button class="btn btn-light" id="themeToggle" type="button" aria-pressed="false">Modo escuro ☾</button>
     </div>
   </header>
 
@@ -174,8 +176,54 @@
         </div>
       </section>
 
+
+      <section class="form-section" id="advancedFeatures">
+        <div class="section-title"><span>09</span><h2>Adaptação à vaga</h2></div>
+        <div class="feature-panel">
+          <h3>Prepare o currículo para uma oportunidade</h3>
+          <p>Cole a descrição da vaga. O CVBuilder envia-a ao assistente de IA existente para sugerir uma versão mais alinhada do perfil profissional. A sugestão só é aplicada após a sua confirmação.</p>
+          <label for="featureJobDescription">Descrição da oferta</label>
+          <textarea id="featureJobDescription" rows="6" maxlength="8000" placeholder="Cole aqui os requisitos e responsabilidades da vaga..."></textarea>
+          <button class="btn btn-primary ai-action" id="tailorFromFeatures" type="button">Analisar e adaptar com IA</button>
+          <p class="feature-help">A adaptação não deve inventar experiência, formação ou competências. Confirme sempre a exactidão do texto sugerido.</p>
+        </div>
+      </section>
       <section class="form-section">
-        <div class="section-title"><span>08</span><h2>Modelos de currículo</h2></div>
+        <div class="section-title"><span>10</span><h2>Editor avançado</h2></div>
+        <div class="feature-panel">
+          <h3>Ordenar secções do currículo</h3>
+          <p>Use as setas para alterar a ordem das secções na pré-visualização. A ordem fica guardada neste navegador.</p>
+          <div class="feature-list" id="sectionOrderList"></div>
+        </div>
+      </section>
+      <section class="form-section">
+        <div class="section-title"><span>11</span><h2>Carta de apresentação</h2></div>
+        <div class="feature-panel">
+          <p>Gere uma primeira versão com base nos dados já preenchidos. Edite o texto antes de o enviar.</p>
+          <label for="letterRole">Cargo a que se candidata</label>
+          <input id="letterRole" type="text" maxlength="160" placeholder="Ex.: Técnico de Informática">
+          <label for="letterCompany">Empresa / organização</label>
+          <input id="letterCompany" type="text" maxlength="160" placeholder="Nome da empresa">
+          <button class="btn btn-primary ai-action" id="generateLetterBtn" type="button">Gerar carta</button>
+          <label for="coverLetterOutput">Texto da carta (editável)</label>
+          <textarea id="coverLetterOutput" rows="12" maxlength="12000" placeholder="A carta gerada aparecerá aqui."></textarea>
+          <div class="feature-actions">
+            <button class="btn btn-light" id="copyLetterBtn" type="button">Copiar texto</button>
+            <button class="btn btn-light" id="downloadLetterBtn" type="button">Exportar TXT</button>
+          </div>
+        </div>
+      </section>
+      <section class="form-section">
+        <div class="section-title"><span>12</span><h2>Histórico de versões</h2></div>
+        <div class="feature-panel">
+          <p>Guarde pontos de recuperação antes de fazer alterações importantes. As versões ficam apenas neste navegador.</p>
+          <button class="btn btn-primary ai-action" id="saveVersionBtn" type="button">Guardar versão actual</button>
+          <div class="feature-list" id="versionHistory"></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>13</span><h2>Modelos de currículo</h2></div>
         <p class="style-help">Escolha um dos 13 modelos. O conteúdo do currículo mantém-se ao mudar de estilo.</p>
         <div class="style-options">
           <button class="style-option active" data-theme="modern" type="button"><span class="theme-swatch theme-modern"></span>Moderno</button>
@@ -264,5 +312,6 @@
   <script src="js/app.js"></script>
   <script src="js/ats.js"></script>
   <script src="js/ai.js"></script>
+  <script src="js/features.js"></script>
 </body>
 </html>
