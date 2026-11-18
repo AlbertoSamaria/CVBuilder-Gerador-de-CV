@@ -15,6 +15,9 @@ Gerador de currículos moderno, responsivo e estático, com processamento de doc
 - Projetos / portfólio
 - 13 modelos visuais, incluindo um modelo ATS simplificado
 - Pré-visualização em tempo real
+- Analisador ATS local com pontuação estrutural de 0 a 100
+- Comparação opcional com descrição de vaga e identificação de palavras-chave encontradas/em falta
+- Recomendações de melhoria baseadas nos campos e conteúdo do currículo, sem enviar dados para servidores
 - Importar currículos PDF com texto seleccionável e Word (.docx)
 - Importar cópias de segurança CVBuilder (.json)
 - Gravação automática do rascunho no navegador enquanto edita
