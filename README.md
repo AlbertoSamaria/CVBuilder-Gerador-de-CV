@@ -17,7 +17,9 @@ Gerador de currículos moderno, responsivo e estático, com processamento de doc
 - Pré-visualização em tempo real
 - Importar currículos PDF com texto seleccionável e Word (.docx)
 - Importar cópias de segurança CVBuilder (.json)
-- Guardar no navegador e descarregar cópia de segurança JSON
+- Gravação automática do rascunho no navegador enquanto edita
+- Recuperação automática do último rascunho ao reabrir a aplicação
+- Guardar manualmente e descarregar cópia de segurança JSON
 - Exportar o currículo para PDF através da impressão do navegador
 - Exportar um documento Word (.docx) editável com os dados do currículo
 - Responsivo para computador, tablet e telemóvel
@@ -34,7 +36,7 @@ A importação de PDF e DOCX é executada localmente no navegador. Os documentos
 
 ## Guardar e recuperar
 
-O botão **Guardar** mantém uma cópia no armazenamento local do navegador e descarrega também um ficheiro JSON de segurança. Para recuperar essa cópia noutro navegador ou computador, utilize **Carregar** e seleccione o ficheiro JSON.
+O CVBuilder guarda automaticamente o rascunho no armazenamento local do navegador enquanto edita e tenta recuperar a última versão ao reabrir a aplicação. O botão **Guardar** também descarrega um ficheiro JSON de segurança. Se o armazenamento local estiver cheio ou indisponível, a aplicação tenta manter a exportação JSON independente. Para recuperar essa cópia noutro navegador ou computador, utilize **Carregar** e seleccione o ficheiro JSON.
 
 ## Exportar documentos
 
@@ -70,7 +72,7 @@ A escolha do modelo altera apenas a apresentação visual; os dados do formulár
 
 ## Privacidade
 
-Os dados do currículo são processados no navegador e guardados localmente. A importação de documentos não envia o ficheiro para um servidor. As funcionalidades de IA são independentes e enviam apenas os dados profissionais seleccionados pelo utilizador para a função configurada.
+Os dados do currículo são processados no navegador e guardados localmente. As fotografias aceites são JPG, PNG e WebP, até 3 MB. A importação de documentos não envia o ficheiro para um servidor. As funcionalidades de IA são independentes e enviam apenas os dados profissionais seleccionados pelo utilizador para a função configurada.
 
 ## Licença
 
