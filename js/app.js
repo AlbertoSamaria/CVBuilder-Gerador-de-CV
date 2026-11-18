@@ -153,8 +153,7 @@ $("#printBtn").onclick=()=>window.print();
 $("#resetBtn").onclick=()=>{
   if(!confirm("Limpar todos os dados do currículo?"))return;
   Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=""});
-  state.photo="";state.experience=[];state.education=[];state.languages=[];setTheme("modern");window.CVBuilder = { state, getData, renderForms, update, toast };
-renderForms();update();toast("Formulário limpo.");
+  state.photo="";state.experience=[];state.education=[];state.languages=[];setTheme("modern");renderForms();update();toast("Formulário limpo.");
 };
 $("#photoInput").onchange=e=>{
   const file=e.target.files[0];if(!file)return;
@@ -168,4 +167,5 @@ $$(".zoom-btn").forEach(b=>b.onclick=()=>{
   $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 
+window.CVBuilder = { state, getData, renderForms, update, toast };
 renderForms();update();
