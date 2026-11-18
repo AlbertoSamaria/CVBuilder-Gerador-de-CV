@@ -43,3 +43,130 @@ label{display:block;font-size:11px;font-weight:800;color:#475467;margin-bottom:1
 .ai-result[hidden],#aiApply[hidden]{display:none}
 .ai-action:disabled{opacity:.55;cursor:wait}
 @media(max-width:650px){.ai-panel{padding:12px}}
+
+
+/* Biblioteca de 13 modelos de currículo */
+.style-help{font-size:11px;line-height:1.5;color:#667085;margin:-7px 0 13px}
+.style-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.style-option{min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:9px 5px;line-height:1.2;transition:border-color .18s,box-shadow .18s,transform .18s}
+.style-option:hover{border-color:#9bb8ee;transform:translateY(-1px)}
+.style-option span{width:100%;height:28px;margin:0;border:1px solid rgba(20,30,50,.08);border-radius:5px}
+.theme-swatch.theme-modern{background:linear-gradient(90deg,#17233b 0 29%,#fff 29% 100%);border-left:6px solid #2563eb}
+.theme-swatch.theme-classic{background:linear-gradient(180deg,#30343b 0 24%,#fff 24%);border-bottom:3px solid #30343b}
+.theme-swatch.theme-minimal{background:linear-gradient(180deg,#fff 0 25%,#f3f4f6 25% 27%,#fff 27%);border:1px solid #d9dee7}
+.theme-swatch.theme-executive{background:linear-gradient(180deg,#14243b 0 46%,#fff 46%);border-bottom:3px solid #c5a46d}
+.theme-swatch.theme-corporate{background:linear-gradient(90deg,#174a7e 0 29%,#fff 29%);border-left:5px solid #4b9bd6}
+.theme-swatch.theme-elegant{background:linear-gradient(180deg,#fff 0 25%,#f7edf0 25%);border-bottom:4px solid #8b3450}
+.theme-swatch.theme-tech{background:linear-gradient(90deg,#111827 0 29%,#fff 29%);border-left:5px solid #0d9488}
+.theme-swatch.theme-creative{background:linear-gradient(90deg,#5b3a91 0 29%,#fff 29%);border-left:5px solid #a78bfa}
+.theme-swatch.theme-academic{background:linear-gradient(180deg,#fff 0 35%,#e5e7eb 35% 38%,#fff 38%);border-top:4px solid #374151}
+.theme-swatch.theme-ats{background:linear-gradient(180deg,#fff 0 23%,#e5e7eb 23% 25%,#fff 25% 60%,#e5e7eb 60% 62%,#fff 62%);border:1px solid #d1d5db}
+.theme-swatch.theme-green{background:linear-gradient(90deg,#174c3c 0 29%,#fff 29%);border-left:5px solid #2e8b68}
+.theme-swatch.theme-bold{background:linear-gradient(180deg,#a94724 0 42%,#fff 42%);border-bottom:4px solid #e18a42}
+.theme-swatch.theme-international{background:linear-gradient(90deg,#fff 0 20%,#e9eff8 20% 22%,#fff 22%);border-left:5px solid #315b91}
+
+/* Executivo — cabeçalho escuro e hierarquia forte */
+.cv.executive{grid-template-columns:1fr;border-top:8px solid #c5a46d}
+.cv.executive .cv-sidebar{display:none}
+.cv.executive .cv-main{padding:0 0 42px}
+.cv.executive .cv-header{background:#14243b;color:#fff;padding:48px 52px 35px;margin:0 0 30px;border:0}
+.cv.executive .cv-header h1{font-family:Georgia,serif;font-size:37px;letter-spacing:.2px}
+.cv.executive .cv-header h2{color:#d9bd86}
+.cv.executive .cv-section{margin-left:52px;margin-right:52px}
+.cv.executive .cv-section h3{color:#14243b;border-bottom:1px solid #e4e0d7;padding-bottom:9px}
+.cv.executive .cv-section h3:after{display:none}
+
+/* Corporativo — azul institucional */
+.cv.corporate .cv-sidebar{background:#174a7e}
+.cv.corporate .cv-photo{border-radius:14px;border:3px solid #8ec5ed}
+.cv.corporate .cv-header h2,.cv.corporate .entry-company{color:#2677b9}
+.cv.corporate .cv-section h3:after{background:#2677b9}
+.cv.corporate .skill-bar i{background:#8ec5ed}
+
+/* Elegante — editorial com tipografia serifada */
+.cv.elegant{grid-template-columns:1fr;border-top:9px solid #8b3450}
+.cv.elegant .cv-sidebar{display:none}
+.cv.elegant .cv-main{padding:48px 62px}
+.cv.elegant .cv-header{border-bottom:1px solid #d8bdc5;padding-bottom:25px}
+.cv.elegant .cv-header h1,.cv.elegant .cv-section h3{font-family:Georgia,serif}
+.cv.elegant .cv-header h1{font-size:39px;font-weight:500;letter-spacing:-.5px;color:#4b2433}
+.cv.elegant .cv-header h2,.cv.elegant .entry-company{color:#8b3450}
+.cv.elegant .cv-section h3{color:#6e2b42;font-size:13px;letter-spacing:.7px;text-transform:none}
+.cv.elegant .cv-section h3:after{background:#8b3450}
+
+/* Tecnologia — carvão e verde-água */
+.cv.tech .cv-sidebar{background:#111827}
+.cv.tech .cv-photo{border-radius:18px;border-color:#0d9488}
+.cv.tech .sidebar-block h3{color:#5eead4}
+.cv.tech .cv-header h2,.cv.tech .entry-company{color:#0f9488}
+.cv.tech .cv-section h3:after{background:#0f9488}
+.cv.tech .skill-bar i{background:#5eead4}
+
+/* Criativo — violeta */
+.cv.creative .cv-sidebar{background:#493273}
+.cv.creative .cv-photo{border-radius:24px;border:4px solid #c4b5fd}
+.cv.creative .sidebar-block h3{color:#ddd1ff}
+.cv.creative .cv-header h1{color:#493273}
+.cv.creative .cv-header h2,.cv.creative .entry-company{color:#7651b5}
+.cv.creative .cv-section h3:after{background:#9b7bd3}
+.cv.creative .skill-bar i{background:#c4b5fd}
+
+/* Académico — composição formal */
+.cv.academic{grid-template-columns:1fr;border-top:5px solid #374151}
+.cv.academic .cv-sidebar{display:none}
+.cv.academic .cv-main{padding:52px 64px;font-family:Georgia,"Times New Roman",serif}
+.cv.academic .cv-header{text-align:center;border-bottom:1px solid #9ca3af;padding-bottom:25px}
+.cv.academic .cv-header h1{font-family:Georgia,serif;font-size:34px;letter-spacing:0}
+.cv.academic .cv-header h2{color:#4b5563;font-family:Arial,sans-serif;letter-spacing:1px}
+.cv.academic .cv-section h3{font-family:Georgia,serif;text-transform:none;letter-spacing:.3px;font-size:14px;border-bottom:1px solid #d1d5db;padding-bottom:7px}
+.cv.academic .cv-section h3:after{display:none}
+.cv.academic .cv-section p,.cv.academic .entry-desc{font-family:Georgia,serif;font-size:11px;color:#374151}
+
+/* ATS — estrutura simples, legível e compatível com sistemas de recrutamento */
+.cv.ats{grid-template-columns:1fr;box-shadow:none;border:1px solid #e5e7eb}
+.cv.ats .cv-sidebar{display:none}
+.cv.ats .cv-main{padding:42px 54px}
+.cv.ats .cv-header{border-bottom:2px solid #222;padding-bottom:17px}
+.cv.ats .cv-header h1{font-size:30px;letter-spacing:0;color:#111}
+.cv.ats .cv-header h2{color:#333;letter-spacing:.5px}
+.cv.ats .cv-section h3{color:#111;border-bottom:1px solid #aaa;padding-bottom:6px}
+.cv.ats .cv-section h3:after{display:none}
+.cv.ats .entry-title,.cv.ats .entry-company,.cv.ats .entry-desc,.cv.ats .cv-section p{color:#222}
+.cv.ats .tag{background:transparent;border:1px solid #bbb;color:#222}
+
+/* Profissional verde — confiança e sustentabilidade */
+.cv.green .cv-sidebar{background:#174c3c}
+.cv.green .cv-photo{border-radius:12px;border-color:#82b9a0}
+.cv.green .sidebar-block h3{color:#b8e0ce}
+.cv.green .cv-header h2,.cv.green .entry-company{color:#28775b}
+.cv.green .cv-section h3:after{background:#28775b}
+.cv.green .skill-bar i{background:#a8d5bf}
+
+/* Impacto — faixa quente e forte presença */
+.cv.bold{grid-template-columns:1fr;border-top:12px solid #a94724}
+.cv.bold .cv-sidebar{display:none}
+.cv.bold .cv-main{padding:0 0 45px}
+.cv.bold .cv-header{background:#a94724;color:#fff;padding:46px 52px 34px;border:0;margin-bottom:28px}
+.cv.bold .cv-header h1{font-size:38px;font-weight:900;letter-spacing:-1.2px}
+.cv.bold .cv-header h2{color:#ffe0c7}
+.cv.bold .cv-section{margin-left:52px;margin-right:52px}
+.cv.bold .cv-section h3{color:#8e391e}
+.cv.bold .cv-section h3:after{background:#e18a42}
+
+/* Internacional — sóbrio, arejado e sem elementos decorativos excessivos */
+.cv.international{grid-template-columns:1fr;border-left:10px solid #315b91}
+.cv.international .cv-sidebar{display:none}
+.cv.international .cv-main{padding:50px 62px}
+.cv.international .cv-header{border-bottom:1px solid #cbd5e1}
+.cv.international .cv-header h1{font-size:35px;letter-spacing:-.5px;color:#1e293b}
+.cv.international .cv-header h2,.cv.international .entry-company{color:#315b91}
+.cv.international .cv-section h3{color:#29476d;letter-spacing:1px}
+.cv.international .cv-section h3:after{background:#315b91}
+
+@media(max-width:650px){
+  .style-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .style-option{min-height:70px}
+}
+@media print{
+  .cv.executive .cv-header,.cv.bold .cv-header,.cv.corporate .cv-sidebar,.cv.tech .cv-sidebar,.cv.creative .cv-sidebar,.cv.green .cv-sidebar{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
