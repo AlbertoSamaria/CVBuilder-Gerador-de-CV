@@ -102,8 +102,41 @@
         </div>
       </section>
 
+      <section class="form-section" id="aiSection">
+        <div class="section-title"><span>07</span><h2>Assistente de IA</h2></div>
+        <div class="ai-panel">
+          <div class="ai-panel-heading">
+            <span class="ai-sparkle">✦</span>
+            <div>
+              <strong>CVBuilder AI</strong>
+              <p>Melhore o seu currículo com sugestões profissionais.</p>
+            </div>
+          </div>
+          <p class="ai-privacy">A IA recebe apenas informação profissional seleccionada. No plano gratuito, o Google pode utilizar os conteúdos enviados para melhorar os seus produtos. Não envie dados confidenciais.</p>
+
+          <button class="btn btn-primary ai-action" id="aiImproveSummary" type="button">✦ Melhorar perfil profissional</button>
+
+          <label class="ai-label">Experiência a melhorar
+            <select id="aiExperienceTarget">
+              <option value="">Adicione primeiro uma experiência</option>
+            </select>
+          </label>
+          <button class="btn btn-light ai-action" id="aiImproveExperience" type="button">Melhorar descrição da experiência</button>
+
+          <label class="ai-label">Oferta de emprego
+            <textarea id="aiJobDescription" rows="4" maxlength="8000" placeholder="Cole aqui a descrição da vaga para adaptar o seu perfil..."></textarea>
+          </label>
+          <button class="btn btn-light ai-action" id="aiTailorJob" type="button">Adaptar perfil à vaga</button>
+          <button class="btn btn-light ai-action" id="aiAnalyze" type="button">Analisar currículo</button>
+
+          <div class="ai-feedback" id="aiStatus" role="status" aria-live="polite"></div>
+          <div class="ai-result" id="aiResult" hidden></div>
+          <button class="btn btn-primary ai-action" id="aiApply" type="button" hidden>Aplicar sugestão ao currículo</button>
+        </div>
+      </section>
+
       <section class="form-section">
-        <div class="section-title"><span>07</span><h2>Estilo</h2></div>
+        <div class="section-title"><span>08</span><h2>Estilo</h2></div>
         <div class="style-options">
           <button class="style-option active" data-theme="modern"><span class="theme-modern"></span>Moderno</button>
           <button class="style-option" data-theme="classic"><span class="theme-classic"></span>Clássico</button>
@@ -175,5 +208,6 @@
 
   <div class="toast" id="toast"></div>
   <script src="js/app.js"></script>
+  <script src="js/ai.js"></script>
 </body>
 </html>
