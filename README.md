@@ -13,12 +13,13 @@ Gerador de currículos moderno, responsivo e estático, com processamento de doc
 - Idiomas
 - Certificações
 - Projetos / portfólio
-- 3 modelos: Moderno, Clássico e Minimalista
+- 13 modelos visuais, incluindo um modelo ATS simplificado
 - Pré-visualização em tempo real
 - Importar currículos PDF com texto seleccionável e Word (.docx)
 - Importar cópias de segurança CVBuilder (.json)
 - Guardar no navegador e descarregar cópia de segurança JSON
-- Exportar o currículo formatado para PDF através da impressão do navegador
+- Exportar o currículo para PDF através da impressão do navegador
+- Exportar um documento Word (.docx) editável com os dados do currículo
 - Responsivo para computador, tablet e telemóvel
 - Sem PHP, MySQL ou servidor backend para os dados do currículo
 
@@ -35,9 +36,10 @@ A importação de PDF e DOCX é executada localmente no navegador. Os documentos
 
 O botão **Guardar** mantém uma cópia no armazenamento local do navegador e descarrega também um ficheiro JSON de segurança. Para recuperar essa cópia noutro navegador ou computador, utilize **Carregar** e seleccione o ficheiro JSON.
 
-## Exportar PDF
+## Exportar documentos
 
-O botão **Exportar PDF** abre a janela de impressão do navegador. Escolha **Guardar como PDF** como destino. O documento exportado contém o currículo formatado, não o formulário de edição.
+- **PDF:** o botão abre a janela de impressão do navegador. Escolha **Guardar como PDF** como destino. A paginação e a apresentação podem variar conforme o navegador e as opções de impressão.
+- **Word (.docx):** o botão gera um documento Word editável com os dados pessoais, perfil, experiência, formação, competências, idiomas, certificações e projectos. A exportação utiliza a biblioteca docx carregada por CDN e requer ligação à Internet.
 
 ## Dependências de leitura
 
@@ -59,7 +61,7 @@ A aplicação disponibiliza 13 modelos visuais:
 7. Tecnologia
 8. Criativo
 9. Académico
-10. ATS / Simples — estrutura limpa para leitura por sistemas de recrutamento
+10. ATS / Simples — estrutura linear, sem coluna lateral, com contacto, competências e idiomas preservados no fluxo principal para facilitar a leitura automática
 11. Profissional Verde
 12. Impacto
 13. Internacional
