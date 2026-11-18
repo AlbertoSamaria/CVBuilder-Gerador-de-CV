@@ -226,7 +226,20 @@ async function importCVFile(file){
       for(let i=1;i<=pdf.numPages;i++){
         const page=await pdf.getPage(i);
         const content=await page.getTextContent();
-        extracted+=content.items.map(item=>item.str).join(" ")+"\n";
+        const ordered=content.items.filter(item=>item.str&&item.str.trim()).sort((a,b)=>{
+          const ay=a.transform&&a.transform[5]||0,by=b.transform&&b.transform[5]||0;
+          if(Math.abs(by-ay)>2)return by-ay;
+          return (a.transform&&a.transform[4]||0)-(b.transform&&b.transform[4]||0);
+        });
+        const textLines=[];
+        let currentY=null,currentLine=[];
+        ordered.forEach(item=>{
+          const y=item.transform&&item.transform[5]||0;
+          if(currentY!==null&&Math.abs(y-currentY)>2){textLines.push(currentLine.join(" "));currentLine=[];}
+          currentY=y;currentLine.push(item.str.trim());
+        });
+        if(currentLine.length)textLines.push(currentLine.join(" "));
+        extracted+=textLines.join("\n")+"\n";
       }
       if(extracted.replace(/\s/g,"").length<30)throw new Error("Este PDF parece digitalizado como imagem. É necessário OCR; importe um PDF com texto seleccionável.");
       applyImportedData(parseResumeText(extracted));
