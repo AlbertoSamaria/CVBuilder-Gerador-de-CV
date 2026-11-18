@@ -6,6 +6,7 @@
   <meta name="description" content="Gerador de currículos online gratuito. Crie, personalize e imprima o seu currículo em PDF.">
   <title>CVBuilder — Gerador de Currículos</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ats.css">
 </head>
 <body>
   <header class="topbar no-print">
@@ -38,6 +39,43 @@
         <div class="progress-info"><span>Preenchimento</span><strong id="progressText">0%</strong></div>
         <div class="progress"><div id="progressBar"></div></div>
       </div>
+
+      <section class="ats-panel no-print" id="atsPanel" aria-labelledby="atsTitle">
+        <div class="ats-heading">
+          <div>
+            <strong id="atsTitle">Analisador ATS inteligente</strong>
+            <p>Avalie a estrutura do currículo e compare-o com uma oferta de emprego. A análise é feita localmente.</p>
+          </div>
+        </div>
+        <div class="ats-score-row">
+          <div class="ats-score-ring" id="atsScoreRing" role="img" aria-label="Pontuação de compatibilidade">
+            <strong id="atsScore">0</strong>
+          </div>
+          <div class="ats-score-copy">
+            <strong id="atsScoreLabel">A preparar análise</strong>
+            <span>Pontuação estimada de compatibilidade</span>
+            <div class="ats-progress"><span id="atsProgress"></span></div>
+          </div>
+        </div>
+        <div class="ats-metrics">
+          <div class="ats-metric"><strong id="atsStructure">0/100</strong><span>Estrutura</span></div>
+          <div class="ats-metric"><strong id="atsKeywordScore">Adicione uma vaga</strong><span>Palavras-chave</span></div>
+          <div class="ats-metric"><strong><span id="atsMatched">0</span>/<span id="atsMissing">0</span></strong><span>Encontradas / em falta</span></div>
+        </div>
+        <label for="atsJobDescription">Descrição da oferta de emprego (opcional)
+          <textarea id="atsJobDescription" rows="5" maxlength="10000" placeholder="Cole aqui a descrição da vaga. O CVBuilder irá comparar os requisitos com o conteúdo do currículo."></textarea>
+        </label>
+        <button class="btn btn-primary ai-action" id="atsAnalyzeBtn" type="button">Analisar compatibilidade</button>
+        <div class="ats-results" id="atsResults" aria-live="polite">
+          <h3>Verificação do currículo</h3>
+          <ul class="ats-checks" id="atsChecks"></ul>
+          <h3>Palavras-chave da oferta</h3>
+          <div id="atsKeywords"></div>
+          <h3>Recomendações</h3>
+          <ul class="ats-suggestions" id="atsSuggestions"></ul>
+          <p class="ats-last-run" id="atsLastRun">Análise local, sem envio de dados.</p>
+        </div>
+      </section>
 
       <section class="form-section">
         <div class="section-title"><span>01</span><h2>Informações pessoais</h2></div>
@@ -224,6 +262,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
   <script src="https://unpkg.com/docx@9.15.4/dist/index.iife.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/ats.js"></script>
   <script src="js/ai.js"></script>
 </body>
 </html>
