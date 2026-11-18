@@ -115,11 +115,11 @@ function buildPrompt(action, data, jobDescription) {
   const professionalData = {
     cargoPretendido: cleanText(data.jobTitle, 160),
     perfilActual: cleanText(data.summary, 1800),
-    experiencias: Array.isArray(data.experience) ? data.experience.slice(0, 8).map(item => ({
+    experiencias: Array.isArray(data.experience) ? data.experience.filter(item => item && typeof item === "object" && !Array.isArray(item)).slice(0, 8).map(item => ({
       cargo: cleanText(item.title, 160),
       descricao: cleanText(item.description, 1200)
     })) : [],
-    formacao: Array.isArray(data.education) ? data.education.slice(0, 8).map(item => ({
+    formacao: Array.isArray(data.education) ? data.education.filter(item => item && typeof item === "object" && !Array.isArray(item)).slice(0, 8).map(item => ({
       curso: cleanText(item.course, 160)
     })) : [],
     competenciasTecnicas: cleanText(data.skills, 1200),
@@ -161,6 +161,12 @@ export default async (request) => {
   if (recent.length >= 6) {
     return jsonResponse(429, { error: "Limite temporário atingido. Aguarde um minuto antes de tentar novamente." });
   }
+  // Limpa IPs antigos para impedir crescimento indefinido do mapa em instâncias persistentes.
+  if (recentRequests.size > 500) {
+    for (const [ip, timestamps] of recentRequests.entries()) {
+      if (!timestamps.some(timestamp => now - timestamp < 60000)) recentRequests.delete(ip);
+    }
+  }
   recent.push(now);
   recentRequests.set(clientIp, recent);
 
@@ -170,9 +176,17 @@ export default async (request) => {
       return jsonResponse(413, { error: "O conteúdo enviado é demasiado extenso. Reduza os textos e tente novamente." });
     }
 
-    const body = JSON.parse(rawBody);
+    let body;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return jsonResponse(400, { error: "O pedido contém JSON inválido." });
+    }
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return jsonResponse(400, { error: "O formato do pedido é inválido." });
+    }
     const action = body.action;
-    const data = body.data && typeof body.data === "object" ? body.data : {};
+    const data = body.data && typeof body.data === "object" && !Array.isArray(body.data) ? body.data : {};
     if (!allowedActions.has(action)) {
       return jsonResponse(400, { error: "Operação de IA inválida." });
     }
