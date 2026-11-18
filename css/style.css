@@ -170,3 +170,40 @@ label{display:block;font-size:11px;font-weight:800;color:#475467;margin-bottom:1
 @media print{
   .cv.executive .cv-header,.cv.bold .cv-header,.cv.corporate .cv-sidebar,.cv.tech .cv-sidebar,.cv.creative .cv-sidebar,.cv.green .cv-sidebar{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
+
+
+/* Correcção ATS: preservar contacto, competências e idiomas no fluxo principal */
+.cv.ats .cv-sidebar{display:contents}
+.cv.ats .cv-photo{display:none!important}
+.cv.ats .cv-main{display:contents}
+.cv.ats .cv-header{order:-10;margin:0 54px 18px;padding:38px 0 16px}
+.cv.ats #cvContactBlock,
+.cv.ats .contact-block{order:-9;margin:0 54px 14px}
+.cv.ats #cvSkillsBlock{order:4}
+.cv.ats #cvLanguagesBlock{order:6}
+.cv.ats .cv-section{margin:0 54px 16px}
+.cv.ats #cvSummarySection{order:1}
+.cv.ats #cvExperienceSection{order:2}
+.cv.ats #cvEducationSection{order:3}
+.cv.ats #cvSoftSkillsSection{order:5}
+.cv.ats #cvCertificationsSection{order:7}
+.cv.ats #cvProjectsSection{order:8}
+.cv.ats .sidebar-block{margin:0 54px 14px;color:#222}
+.cv.ats .sidebar-block h3{color:#111;border-bottom:1px solid #aaa;padding-bottom:5px;letter-spacing:.5px}
+.cv.ats .contact-item,.cv.ats .skill-name,.cv.ats .lang{color:#222;font-size:10.5px}
+.cv.ats .skill{display:inline-block;margin:0 12px 5px 0}
+.cv.ats .skill-bar{display:none}
+.cv.ats .lang{display:inline-flex;gap:5px;margin:0 14px 5px 0}
+.cv.ats .cv-section h3{margin-bottom:8px}
+.cv.ats .entry,.cv.ats .cv-section,.cv.ats .sidebar-block{break-inside:avoid}
+@media print{
+  @page{size:A4;margin:12mm}
+  .cv{width:186mm!important;min-height:0!important}
+  .cv.ats{border:0}
+  .cv.ats .cv-header,.cv.ats .sidebar-block,.cv.ats .cv-section{margin-left:0!important;margin-right:0!important}
+  .cv.ats .cv-header{padding-top:0}
+  .cv.ats .cv-section,.cv.ats .entry{break-inside:avoid-page}
+  .cv:not(.ats) .cv-section{break-inside:auto}
+  .cv:not(.ats) .entry{break-inside:avoid-page}
+  .cv-sidebar,.cv-header,.cv-section,.sidebar-block{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
