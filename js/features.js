@@ -8,7 +8,9 @@
   const sectionNames = {
     cvSummarySection:"Perfil profissional",
     cvExperienceSection:"Experiência profissional",
-    cvEducationSection:"Formação académica",\n    cvTechnicalSkillsSection:"Competências técnicas",\n    cvLanguagesSection:"Idiomas",
+    cvEducationSection:"Formação académica",
+    cvTechnicalSkillsSection:"Competências técnicas",
+    cvLanguagesSection:"Idiomas",
     cvSoftSkillsSection:"Competências pessoais",
     cvCertificationsSection:"Certificações",
     cvProjectsSection:"Projectos"
