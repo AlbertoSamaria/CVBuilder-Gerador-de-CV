@@ -46,6 +46,26 @@ O botão **Exportar PDF** abre a janela de impressão do navegador. Escolha **Gu
 
 As bibliotecas são carregadas por CDN. É necessária ligação à Internet para importar PDF e DOCX.
 
+## Modelos de currículo
+
+A aplicação disponibiliza 13 modelos visuais:
+
+1. Moderno
+2. Clássico
+3. Minimalista
+4. Executivo
+5. Corporativo
+6. Elegante
+7. Tecnologia
+8. Criativo
+9. Académico
+10. ATS / Simples — estrutura limpa para leitura por sistemas de recrutamento
+11. Profissional Verde
+12. Impacto
+13. Internacional
+
+A escolha do modelo altera apenas a apresentação visual; os dados do formulário permanecem intactos. O modelo escolhido também é incluído na cópia de segurança JSON.
+
 ## Privacidade
 
 Os dados do currículo são processados no navegador e guardados localmente. A importação de documentos não envia o ficheiro para um servidor. As funcionalidades de IA são independentes e enviam apenas os dados profissionais seleccionados pelo utilizador para a função configurada.
