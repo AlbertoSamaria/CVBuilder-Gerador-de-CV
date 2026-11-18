@@ -1,0 +1,34 @@
+/* Funcionalidades avançadas CVBuilder */
+.feature-panel{border:1px solid #dce3ed;border-radius:13px;padding:15px;margin:16px 0;background:#fff}
+.feature-panel h3{font-size:13px;margin:0 0 8px;color:#172033}
+.feature-panel p,.feature-help{font-size:11px;line-height:1.55;color:#667085}
+.feature-panel label{display:block;margin:10px 0 6px;font-size:11px;font-weight:600;color:#344054}
+.feature-panel input,.feature-panel textarea,.feature-panel select{width:100%;border:1px solid #d9dfe8;border-radius:8px;padding:10px;background:#fff;color:#172033;font:inherit;font-size:12px;margin-top:5px}
+.feature-panel textarea{min-height:90px;resize:vertical}
+.feature-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.feature-actions .btn{flex:1;min-width:110px}
+.feature-list{display:grid;gap:7px;margin-top:10px}
+.feature-list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid #e5eaf1;border-radius:8px;background:#fff;font-size:11px}
+.feature-list-item span{overflow-wrap:anywhere}
+.feature-list-item button{border:1px solid #d9dfe8;background:#f8fafc;border-radius:6px;padding:5px 9px;cursor:pointer;color:#344054}
+#coverLetterOutput{min-height:230px;line-height:1.6}
+.top-actions #themeToggle{min-width:110px}
+body.dark-mode{background:#101827;color:#e5e7eb}
+body.dark-mode .topbar,body.dark-mode .editor,body.dark-mode .preview-toolbar{background:#182235;color:#e5e7eb;border-color:#334155}
+body.dark-mode .brand strong,body.dark-mode .editor h1,body.dark-mode .section-title h2,body.dark-mode .editor-head p,body.dark-mode .progress-info,body.dark-mode .preview-toolbar{color:#e5e7eb}
+body.dark-mode .editor{border-color:#334155}
+body.dark-mode .form-section{border-color:#334155}
+body.dark-mode .form-section label,body.dark-mode .feature-panel label{color:#d1d5db}
+body.dark-mode .repeat-card,body.dark-mode .feature-panel,body.dark-mode .ai-panel,body.dark-mode .ats-panel{background:#1e293b;border-color:#475569;color:#e5e7eb}
+body.dark-mode .feature-panel h3,body.dark-mode .ats-heading strong,body.dark-mode .ai-panel-heading strong{color:#f8fafc}
+body.dark-mode .feature-panel p,body.dark-mode .feature-help,body.dark-mode .ai-panel-heading p,body.dark-mode .ats-heading p{color:#cbd5e1}
+body.dark-mode .feature-panel input,body.dark-mode .feature-panel textarea,body.dark-mode .feature-panel select,body.dark-mode .ai-label select,body.dark-mode .ats-panel textarea{background:#0f172a;border-color:#475569;color:#f8fafc}
+body.dark-mode .feature-list-item{background:#0f172a;border-color:#475569;color:#e5e7eb}
+body.dark-mode .feature-list-item button{background:#334155;border-color:#64748b;color:#fff}
+body.dark-mode .ats-score-row,body.dark-mode .ats-metric,body.dark-mode .ats-checks li,body.dark-mode .ai-result{background:#0f172a;border-color:#475569;color:#e5e7eb}
+body.dark-mode .ats-score-ring:before{background:#0f172a}
+body.dark-mode .ats-score-ring strong,body.dark-mode .ats-metric strong{color:#f8fafc}
+body.dark-mode .ats-results h3{color:#e2e8f0}
+body.dark-mode .ats-score-copy span,body.dark-mode .ats-metric span{color:#cbd5e1}
+@media(max-width:650px){.feature-panel{padding:12px}.feature-actions{display:grid;grid-template-columns:1fr}.feature-actions .btn{width:100%}}
+@media print{.feature-panel{display:none!important}}
