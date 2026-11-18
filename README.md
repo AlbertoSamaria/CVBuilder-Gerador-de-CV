@@ -25,6 +25,11 @@ Gerador de currículos moderno, responsivo e estático, com processamento de doc
 - Guardar manualmente e descarregar cópia de segurança JSON
 - Exportar o currículo para PDF através da impressão do navegador
 - Exportar um documento Word (.docx) editável com os dados do currículo
+- Adaptação do perfil profissional à descrição de uma vaga com IA, mediante confirmação do utilizador
+- Editor avançado para reordenar secções do currículo
+- Gerador editável de cartas de apresentação, com cópia e exportação TXT
+- Histórico local de até 20 versões, com restauração e eliminação
+- Alternância entre modo claro e modo escuro
 - Responsivo para computador, tablet e telemóvel
 - Sem PHP, MySQL ou servidor backend para os dados do currículo
 
@@ -72,6 +77,13 @@ A aplicação disponibiliza 13 modelos visuais:
 13. Internacional
 
 A escolha do modelo altera apenas a apresentação visual; os dados do formulário permanecem intactos. O modelo escolhido também é incluído na cópia de segurança JSON.
+
+## Funcionalidades avançadas
+
+- A adaptação à vaga utiliza a função de IA já configurada no Netlify e depende da disponibilidade da chave e do serviço Gemini. A sugestão é apresentada para revisão e não deve acrescentar competências ou experiências que o candidato não possua.
+- A carta de apresentação é gerada localmente a partir dos campos do currículo. O texto pode ser editado, copiado ou exportado em TXT.
+- O histórico mantém até 20 versões no armazenamento local do navegador. Não é uma sincronização na nuvem; limpar os dados do navegador pode eliminar estas versões.
+- A ordem das secções e a preferência de tema claro/escuro também são guardadas localmente no navegador.
 
 ## Privacidade
 
