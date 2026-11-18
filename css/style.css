@@ -24,3 +24,22 @@ label{display:block;font-size:11px;font-weight:800;color:#475467;margin-bottom:1
 @media(max-width:1050px){.app{grid-template-columns:1fr}.editor{height:auto;max-height:none;border-right:0}.preview-area{min-height:900px}.preview-toolbar{position:sticky;top:0;z-index:5}}
 @media(max-width:650px){.topbar{height:auto;min-height:64px;padding:10px 14px;gap:10px}.top-actions .btn-light{display:none}.app{display:block}.editor{padding:18px 15px}.grid.two{grid-template-columns:1fr}.paper-wrap{padding:16px;justify-content:flex-start;overflow:auto}.cv{transform:scale(.55);transform-origin:top left;margin-right:-350px;margin-bottom:-450px}.preview-toolbar{padding:0 14px}.style-options{grid-template-columns:1fr}.cv-main{padding:30px 25px}}
 @media print{body{background:#fff}.no-print{display:none!important}.preview-area{background:#fff;display:block}.paper-wrap{padding:0;display:block}.cv{box-shadow:none;transform:none!important;margin:0;width:210mm;min-height:297mm}.cv-sidebar{print-color-adjust:exact;-webkit-print-color-adjust:exact}.cv-main{break-inside:auto}.cv-section{break-inside:auto}}
+
+
+/* Assistente de IA */
+.ai-panel{border:1px solid #dbe5f5;background:linear-gradient(145deg,#f8fbff,#fff);border-radius:13px;padding:15px}
+.ai-panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.ai-sparkle{width:38px;height:38px;border-radius:11px;background:#eaf1ff;color:#2563eb;display:grid;place-items:center;font-size:22px}
+.ai-panel-heading strong{display:block;font-size:14px;color:#172033}
+.ai-panel-heading p{font-size:11px;color:#667085;margin-top:3px}
+.ai-privacy{font-size:10px;line-height:1.55;color:#667085;background:#f1f5f9;border-radius:8px;padding:9px;margin-bottom:12px}
+.ai-action{width:100%;margin:5px 0 9px;min-height:38px;font-size:11px}
+.ai-label{margin-top:7px}
+.ai-label select{display:block;width:100%;margin-top:6px;border:1px solid #d9dfe8;border-radius:8px;padding:10px 11px;color:#172033;background:#fff;font-size:12px}
+.ai-feedback{font-size:11px;color:#475467;line-height:1.5;margin:7px 0}
+.ai-feedback.loading{color:#1d4ed8}
+.ai-feedback.error{color:#b42318}
+.ai-result{white-space:pre-wrap;overflow-wrap:anywhere;background:#fff;border:1px solid #dbe5f5;border-radius:9px;padding:12px;font-size:12px;line-height:1.65;color:#344054;margin:10px 0}
+.ai-result[hidden],#aiApply[hidden]{display:none}
+.ai-action:disabled{opacity:.55;cursor:wait}
+@media(max-width:650px){.ai-panel{padding:12px}}
