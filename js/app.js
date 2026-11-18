@@ -391,6 +391,7 @@ $("#resetBtn").onclick=()=>{
   state.photo="";state.experience=[];state.education=[];state.languages=[];state.zoom=1;
   $("#photoInput").value="";$("#cvPreview").style.transform="";$("#zoomText").textContent="100%";
   setTheme("modern");renderForms();update();
+  clearTimeout(autosaveTimer);
   try{localStorage.removeItem("cvbuilder-data");}catch(error){console.warn(error);}
   toast("Formulário limpo.");
 };
