@@ -317,33 +317,50 @@ async function exportWord(){
     if(d.jobTitle)addParagraph(d.jobTitle,{bold:true,size:24,color:"315B91",after:130});
     const contacts=[d.email,d.phone,d.location,d.linkedin].filter(Boolean);
     if(contacts.length)addParagraph(contacts.join("  |  "),{size:18,color:"536174",after:180});
-    if(d.summary){addSection("Perfil profissional");addParagraph(d.summary,{size:21,after:120});}
-
-    if(state.experience.some(x=>x.title||x.company||x.description)){
-      addSection("Experiência profissional");
-      state.experience.filter(x=>x.title||x.company||x.description).forEach(x=>{
-        addParagraph([x.title,x.company].filter(Boolean).join(" — "),{bold:true,size:22,after:35});
-        const meta=[x.date,x.location].filter(Boolean).join(" | ");
-        if(meta)addParagraph(meta,{size:18,color:"667085",after:55});
-        addLines(x.description);
-      });
-    }
-    if(state.education.some(x=>x.title||x.school)){
-      addSection("Formação académica");
-      state.education.filter(x=>x.title||x.school).forEach(x=>{
-        addParagraph([x.title,x.school].filter(Boolean).join(" — "),{bold:true,size:21,after:35});
-        if(x.date)addParagraph(x.date,{size:18,color:"667085",after:65});
-      });
-    }
-    if(d.skills){addSection("Competências técnicas");addLines(d.skills);}
-    if(d.softSkills){addSection("Competências pessoais");addLines(d.softSkills);}
-    if(state.languages.some(x=>x.name||x.level)){
-      addSection("Idiomas");
-      state.languages.filter(x=>x.name||x.level).forEach(x=>addParagraph([x.name,x.level].filter(Boolean).join(" — "),{after:55}));
-    }
-    if(d.certifications){addSection("Certificações");addLines(d.certifications);}
-    if(d.projects){addSection("Projetos e portfólio");addLines(d.projects);}
-
+    const sectionExporters={
+      cvSummarySection:()=>{
+        if(d.summary){addSection("Perfil profissional");addParagraph(d.summary,{size:21,after:120});}
+      },
+      cvExperienceSection:()=>{
+        if(!state.experience.some(x=>x.title||x.company||x.description))return;
+        addSection("Experiência profissional");
+        state.experience.filter(x=>x.title||x.company||x.description).forEach(x=>{
+          addParagraph([x.title,x.company].filter(Boolean).join(" — "),{bold:true,size:22,after:35});
+          const meta=[x.date,x.location].filter(Boolean).join(" | ");
+          if(meta)addParagraph(meta,{size:18,color:"667085",after:55});
+          addLines(x.description);
+        });
+      },
+      cvEducationSection:()=>{
+        if(!state.education.some(x=>x.title||x.school))return;
+        addSection("Formação académica");
+        state.education.filter(x=>x.title||x.school).forEach(x=>{
+          addParagraph([x.title,x.school].filter(Boolean).join(" — "),{bold:true,size:21,after:35});
+          if(x.date)addParagraph(x.date,{size:18,color:"667085",after:65});
+        });
+      },
+      cvTechnicalSkillsSection:()=>{
+        if(d.skills){addSection("Competências técnicas");addLines(d.skills);}
+      },
+      cvSoftSkillsSection:()=>{
+        if(d.softSkills){addSection("Competências pessoais");addLines(d.softSkills);}
+      },
+      cvLanguagesSection:()=>{
+        if(state.languages.some(x=>x.name||x.level)){
+          addSection("Idiomas");
+          state.languages.filter(x=>x.name||x.level).forEach(x=>addParagraph([x.name,x.level].filter(Boolean).join(" — "),{after:55}));
+        }
+      },
+      cvCertificationsSection:()=>{
+        if(d.certifications){addSection("Certificações");addLines(d.certifications);}
+      },
+      cvProjectsSection:()=>{
+        if(d.projects){addSection("Projetos e portfólio");addLines(d.projects);}
+      }
+    };
+    const orderedSections=[...document.querySelectorAll("#cvPreview .cv-main > .cv-section")]
+      .map(element=>element.id).filter(id=>sectionExporters[id]);
+    orderedSections.forEach(id=>sectionExporters[id]());
     const documentFile=new lib.Document({
       creator:"CVBuilder",
       title:"Currículo - "+(d.fullName||"Utilizador"),
