@@ -441,7 +441,7 @@ window.addEventListener("beforeunload",()=>{
   }catch(error){console.warn(error);}
 });
 
-window.CVBuilder = { state, getData, renderForms, update, toast, exportWord };
+window.CVBuilder = { state, getData, renderForms, update, toast, exportWord, applyImportedData, setTheme };
 $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 restoreDraft();
 renderForms();update();
