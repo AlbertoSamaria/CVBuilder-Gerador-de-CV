@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerador de currículos online gratuito. Crie, personalize e imprima o seu currículo em PDF.">
+  <title>CVBuilder — Gerador de Currículos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar no-print">
+    <div class="brand">
+      <div class="brand-mark">CV</div>
+      <div>
+        <strong>CVBuilder</strong>
+        <span>Gerador de Currículos</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-light" id="loadBtn">Carregar</button>
+      <button class="btn btn-light" id="saveBtn">Guardar</button>
+      <button class="btn btn-primary" id="printBtn">Exportar PDF</button>
+    </div>
+  </header>
+
+  <main class="app no-print">
+    <aside class="editor">
+      <div class="editor-head">
+        <div>
+          <h1>Crie o seu currículo</h1>
+          <p>Preencha os dados e veja o resultado em tempo real.</p>
+        </div>
+        <button class="icon-btn" id="resetBtn" title="Limpar formulário">↺</button>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-info"><span>Preenchimento</span><strong id="progressText">0%</strong></div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+
+      <section class="form-section">
+        <div class="section-title"><span>01</span><h2>Informações pessoais</h2></div>
+        <div class="photo-row">
+          <div class="photo-upload" id="photoUpload">
+            <img id="photoPreview" alt="Foto do perfil">
+            <span id="photoPlaceholder">+</span>
+            <input type="file" id="photoInput" accept="image/*">
+          </div>
+          <div class="photo-help">
+            <strong>Foto profissional</strong>
+            <p>JPG ou PNG. Uma fotografia simples e profissional funciona melhor.</p>
+            <button class="text-btn" id="removePhotoBtn">Remover foto</button>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <label>Nome completo<input id="fullName" placeholder="Ex.: Alberto Samaria"></label>
+          <label>Cargo / profissão<input id="jobTitle" placeholder="Ex.: Técnico de Informática"></label>
+        </div>
+        <div class="grid two">
+          <label>Email<input id="email" type="email" placeholder="exemplo@email.com"></label>
+          <label>Telefone<input id="phone" placeholder="+244 9XX XXX XXX"></label>
+        </div>
+        <div class="grid two">
+          <label>Localização<input id="location" placeholder="Luanda, Angola"></label>
+          <label>LinkedIn<input id="linkedin" placeholder="linkedin.com/in/seunome"></label>
+        </div>
+        <label>Perfil profissional<textarea id="summary" rows="4" placeholder="Escreva um resumo profissional curto, destacando experiência, competências e objetivo."></textarea></label>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>02</span><h2>Experiência profissional</h2></div>
+        <div id="experienceForm"></div>
+        <button class="add-btn" id="addExperience">+ Adicionar experiência</button>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>03</span><h2>Formação académica</h2></div>
+        <div id="educationForm"></div>
+        <button class="add-btn" id="addEducation">+ Adicionar formação</button>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>04</span><h2>Competências</h2></div>
+        <div class="grid two">
+          <label>Competências técnicas<textarea id="skills" rows="4" placeholder="PHP, MySQL, JavaScript, Git, Redes..."></textarea></label>
+          <label>Competências pessoais<textarea id="softSkills" rows="4" placeholder="Comunicação, liderança, organização..."></textarea></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>05</span><h2>Idiomas</h2></div>
+        <div id="languagesForm"></div>
+        <button class="add-btn" id="addLanguage">+ Adicionar idioma</button>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>06</span><h2>Extras</h2></div>
+        <div class="grid two">
+          <label>Certificações<textarea id="certifications" rows="3" placeholder="Nome da certificação — Instituição — Ano"></textarea></label>
+          <label>Projetos / Portfólio<textarea id="projects" rows="3" placeholder="Projeto — descrição curta — link"></textarea></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-title"><span>07</span><h2>Estilo</h2></div>
+        <div class="style-options">
+          <button class="style-option active" data-theme="modern"><span class="theme-modern"></span>Moderno</button>
+          <button class="style-option" data-theme="classic"><span class="theme-classic"></span>Clássico</button>
+          <button class="style-option" data-theme="minimal"><span class="theme-minimal"></span>Minimalista</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="preview-area">
+      <div class="preview-toolbar">
+        <span><span class="status-dot"></span> Pré-visualização ao vivo</span>
+        <div>
+          <button class="zoom-btn" data-zoom="-0.05">−</button>
+          <span id="zoomText">100%</span>
+          <button class="zoom-btn" data-zoom="0.05">+</button>
+        </div>
+      </div>
+      <div class="paper-wrap">
+        <article class="cv" id="cvPreview">
+          <div class="cv-sidebar">
+            <div class="cv-photo"><img id="cvPhoto" alt=""></div>
+            <div class="sidebar-block contact-block">
+              <h3>Contacto</h3>
+              <div id="cvContact"></div>
+            </div>
+            <div class="sidebar-block" id="cvSkillsBlock">
+              <h3>Competências</h3>
+              <div id="cvSkills"></div>
+            </div>
+            <div class="sidebar-block" id="cvLanguagesBlock">
+              <h3>Idiomas</h3>
+              <div id="cvLanguages"></div>
+            </div>
+          </div>
+          <div class="cv-main">
+            <header class="cv-header">
+              <h1 id="cvName">O seu nome</h1>
+              <h2 id="cvJob">Cargo profissional</h2>
+            </header>
+            <section class="cv-section" id="cvSummarySection">
+              <h3>Perfil</h3>
+              <p id="cvSummary">Adicione um resumo profissional no formulário.</p>
+            </section>
+            <section class="cv-section" id="cvExperienceSection">
+              <h3>Experiência profissional</h3>
+              <div id="cvExperience"></div>
+            </section>
+            <section class="cv-section" id="cvEducationSection">
+              <h3>Formação académica</h3>
+              <div id="cvEducation"></div>
+            </section>
+            <section class="cv-section" id="cvSoftSkillsSection">
+              <h3>Competências pessoais</h3>
+              <div id="cvSoftSkills"></div>
+            </section>
+            <section class="cv-section" id="cvCertificationsSection">
+              <h3>Certificações</h3>
+              <div id="cvCertifications"></div>
+            </section>
+            <section class="cv-section" id="cvProjectsSection">
+              <h3>Projetos</h3>
+              <div id="cvProjects"></div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
