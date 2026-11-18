@@ -84,6 +84,8 @@ A escolha do modelo altera apenas a apresentação visual; os dados do formulár
 - A carta de apresentação é gerada localmente a partir dos campos do currículo. O texto pode ser editado, copiado ou exportado em TXT.
 - O histórico mantém até 20 versões no armazenamento local do navegador. Não é uma sincronização na nuvem; limpar os dados do navegador pode eliminar estas versões.
 - A ordem das secções e a preferência de tema claro/escuro também são guardadas localmente no navegador.
+- Nos modelos de uma coluna, as competências técnicas e os idiomas passam a aparecer no corpo principal do currículo, em vez de desaparecerem com a barra lateral.
+- A exportação Word respeita a ordem actual das secções definida no editor.
 
 ## Privacidade
 
