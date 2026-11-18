@@ -4,11 +4,11 @@
   const cv = () => window.CVBuilder;
   const HISTORY_KEY = "cvbuilder-history-v1";
   const THEME_KEY = "cvbuilder-color-mode";
-  const sectionIds = ["cvSummarySection","cvExperienceSection","cvEducationSection","cvSoftSkillsSection","cvCertificationsSection","cvProjectsSection"];
+  const sectionIds = ["cvSummarySection","cvExperienceSection","cvEducationSection","cvTechnicalSkillsSection","cvLanguagesSection","cvSoftSkillsSection","cvCertificationsSection","cvProjectsSection"];
   const sectionNames = {
     cvSummarySection:"Perfil profissional",
     cvExperienceSection:"Experiência profissional",
-    cvEducationSection:"Formação académica",
+    cvEducationSection:"Formação académica",\n    cvTechnicalSkillsSection:"Competências técnicas",\n    cvLanguagesSection:"Idiomas",
     cvSoftSkillsSection:"Competências pessoais",
     cvCertificationsSection:"Certificações",
     cvProjectsSection:"Projectos"
