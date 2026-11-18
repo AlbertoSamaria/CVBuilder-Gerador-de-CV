@@ -7,8 +7,9 @@ const state = {
   experience: [],
   education: [],
   languages: [],
-  zoom: 1
+  zoom: window.matchMedia("(max-width: 650px)").matches ? 0.55 : 1
 };
+let zoomAdjusted = false;
 
 const defaults = {
   fullName:"", jobTitle:"", email:"", phone:"", location:"", linkedin:"",
@@ -388,8 +389,8 @@ $("#wordBtn").onclick=exportWord;
 $("#resetBtn").onclick=()=>{
   if(!confirm("Limpar todos os dados do currículo?"))return;
   Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=""});
-  state.photo="";state.experience=[];state.education=[];state.languages=[];state.zoom=1;
-  $("#photoInput").value="";$("#cvPreview").style.transform="";$("#zoomText").textContent="100%";
+  state.photo="";state.experience=[];state.education=[];state.languages=[];state.zoom=window.matchMedia("(max-width: 650px)").matches?0.55:1;zoomAdjusted=false;
+  $("#photoInput").value="";$("#cvPreview").style.transform="";$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
   setTheme("modern");renderForms();update();
   clearTimeout(autosaveTimer);
   try{localStorage.removeItem("cvbuilder-data");}catch(error){console.warn(error);}
@@ -402,9 +403,16 @@ $("#photoInput").onchange=e=>{
   const reader=new FileReader();reader.onload=()=>{state.photo=reader.result;update()};reader.onerror=()=>toast("Não foi possível ler a fotografia.");reader.readAsDataURL(file);
 };
 $("#removePhotoBtn").onclick=()=>{state.photo="";$("#photoInput").value="";update()};
-$$(".zoom-btn").forEach(b=>b.onclick=()=>{
-  state.zoom=Math.max(.55,Math.min(1.3,state.zoom+Number(b.dataset.zoom)));
+$(".zoom-btn").forEach(b=>b.onclick=()=>{
+  zoomAdjusted=true;
+  state.zoom=Math.max(.35,Math.min(1.3,state.zoom+Number(b.dataset.zoom)));
   $("#cvPreview").style.transform=`scale(${state.zoom})`;
+  $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
+});
+window.addEventListener("resize",()=>{
+  if(zoomAdjusted)return;
+  state.zoom=window.matchMedia("(max-width: 650px)").matches?0.55:1;
+  $("#cvPreview").style.transform="";
   $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 
@@ -434,5 +442,6 @@ window.addEventListener("beforeunload",()=>{
 });
 
 window.CVBuilder = { state, getData, renderForms, update, toast, exportWord };
+$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 restoreDraft();
 renderForms();update();
