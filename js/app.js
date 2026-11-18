@@ -141,7 +141,7 @@ function saveData(){
 function applyImportedData(s){
   if(!s||typeof s!=="object"||!s.data||typeof s.data!=="object")throw new Error("Ficheiro de currículo inválido.");
   Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=typeof s.data[k]==="string"?s.data[k]:""});
-  state.theme=["modern","classic","minimal"].includes(s.theme)?s.theme:"modern";
+  state.theme=["modern","classic","minimal","executive","corporate","elegant","tech","creative","academic","ats","green","bold","international"].includes(s.theme)?s.theme:"modern";
   state.photo=typeof s.photo==="string"?s.photo:"";
   state.experience=Array.isArray(s.experience)?s.experience:[];
   state.education=Array.isArray(s.education)?s.education:[];
