@@ -159,7 +159,7 @@ function extractSection(text, names){
     const result=[];
     for(let j=i+1;j<rows.length;j++){
       const next=rows[j].replace(/[:：]$/,"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-      if(stop.includes(next))break;
+      if(stop.some(name=>next===name||next.startsWith(name+" ")))break;
       result.push(rows[j]);
     }
     return result.join("\n").trim();
