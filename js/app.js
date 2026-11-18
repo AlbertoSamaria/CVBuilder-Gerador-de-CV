@@ -83,6 +83,18 @@ function renderCV(){
 
   $("#cvLanguagesBlock").style.display=state.languages.length?"":"none";
   $("#cvLanguages").innerHTML=state.languages.map(x=>`<div class="lang"><span>${esc(x.name)}</span><span>${esc(x.level)}</span></div>`).join("");
+  const noSidebarThemes=["classic","minimal","executive","elegant","academic","bold","international"];
+  const showMainExtras=noSidebarThemes.includes(state.theme);
+  const mainSkills=$("#cvTechnicalSkillsSection");
+  const mainLanguages=$("#cvLanguagesSection");
+  if(mainSkills){
+    mainSkills.hidden=!(showMainExtras&&skills.length);
+    $("#cvTechnicalSkills").innerHTML=skills.map(item=>'<span class="tag">'+esc(item)+'</span>').join("");
+  }
+  if(mainLanguages){
+    mainLanguages.hidden=!(showMainExtras&&state.languages.length);
+    $("#cvMainLanguages").innerHTML=state.languages.map(x=>'<div class="entry-desc">'+esc(x.name)+(x.level?' — '+esc(x.level):'')+'</div>').join("");
+  }
 
   $("#cvExperience").innerHTML=state.experience.filter(x=>x.title||x.company||x.description).map(x=>`
     <div class="entry"><div class="entry-head"><div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.company)}</div></div><div class="entry-date">${esc(x.date)}</div></div>
