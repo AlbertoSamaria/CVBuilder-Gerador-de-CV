@@ -122,30 +122,46 @@ function updateProgress(){
   const p=Math.min(100,Math.round(filled/total*100));
   $("#progressBar").style.width=p+"%";$("#progressText").textContent=p+"%";
 }
-function update(){renderCV();}
+let autosaveTimer = null;
+function persistDraft(){
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(()=>{
+    try {
+      const backup={version:1,data:getData(),...state,savedAt:new Date().toISOString()};
+      localStorage.setItem("cvbuilder-data",JSON.stringify(backup));
+    } catch(error) {
+      console.warn("Não foi possível guardar o rascunho automaticamente.",error);
+    }
+  },450);
+}
+function update(){renderCV();persistDraft();}
 
 function saveData(){
   const backup={version:1,data:getData(),...state,exportedAt:new Date().toISOString()};
+  let localSaved=false;
+  try{localStorage.setItem("cvbuilder-data",JSON.stringify(backup));localSaved=true;}
+  catch(error){console.warn("Armazenamento local indisponível; será criada apenas a cópia de segurança.",error);}
   try{
-    localStorage.setItem("cvbuilder-data",JSON.stringify(backup));
     const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
     const base=(getData().fullName||"curriculo").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9_-]+/gi,"-").toLowerCase();
     a.href=url;a.download=(base||"curriculo")+"-cvbuilder.json";
     document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
-    toast("Currículo guardado e cópia de segurança descarregada.");
-  }catch(e){console.error(e);toast("Não foi possível guardar o currículo.");}
+    toast(localSaved?"Currículo guardado e cópia de segurança descarregada.":"Cópia de segurança descarregada; o navegador não permitiu guardar localmente.");
+  }catch(error){console.error(error);toast(localSaved?"Currículo guardado no navegador, mas não foi possível descarregar a cópia.":"Não foi possível guardar nem exportar o currículo.");}
 }
 
 function applyImportedData(s){
-  if(!s||typeof s!=="object"||!s.data||typeof s.data!=="object")throw new Error("Ficheiro de currículo inválido.");
-  Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=typeof s.data[k]==="string"?s.data[k]:""});
+  if(!s||typeof s!=="object"||Array.isArray(s)||!s.data||typeof s.data!=="object"||Array.isArray(s.data))throw new Error("Ficheiro de currículo inválido.");
+  const limitText=(value,max)=>typeof value==="string"?value.slice(0,max):"";
+  Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=limitText(s.data[k],k==="summary"?5000:3000)});
   state.theme=["modern","classic","minimal","executive","corporate","elegant","tech","creative","academic","ats","green","bold","international"].includes(s.theme)?s.theme:"modern";
-  state.photo=typeof s.photo==="string"?s.photo:"";
-  state.experience=Array.isArray(s.experience)?s.experience:[];
-  state.education=Array.isArray(s.education)?s.education:[];
-  state.languages=Array.isArray(s.languages)?s.languages:[];
+  state.photo=typeof s.photo==="string"&&s.photo.length<=4200000&&/^data:image\/(?:png|jpeg|webp);base64,/i.test(s.photo)?s.photo:"";
+  const cleanItems=(items,fields,maxItems=30)=>Array.isArray(items)?items.slice(0,maxItems).filter(item=>item&&typeof item==="object"&&!Array.isArray(item)).map(item=>Object.fromEntries(fields.map(([key,max])=>[key,limitText(item[key],max)]))):[];
+  state.experience=cleanItems(s.experience,[["title",200],["company",200],["date",100],["location",150],["description",4000]]);
+  state.education=cleanItems(s.education,[["title",200],["school",200],["date",100]]);
+  state.languages=cleanItems(s.languages,[["name",100],["level",100]],20);
   renderForms();setTheme(state.theme);update();
 }
 
@@ -372,12 +388,17 @@ $("#wordBtn").onclick=exportWord;
 $("#resetBtn").onclick=()=>{
   if(!confirm("Limpar todos os dados do currículo?"))return;
   Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=""});
-  state.photo="";state.experience=[];state.education=[];state.languages=[];setTheme("modern");renderForms();update();toast("Formulário limpo.");
+  state.photo="";state.experience=[];state.education=[];state.languages=[];state.zoom=1;
+  $("#photoInput").value="";$("#cvPreview").style.transform="";$("#zoomText").textContent="100%";
+  setTheme("modern");renderForms();update();
+  try{localStorage.removeItem("cvbuilder-data");}catch(error){console.warn(error);}
+  toast("Formulário limpo.");
 };
 $("#photoInput").onchange=e=>{
   const file=e.target.files[0];if(!file)return;
-  if(file.size>3*1024*1024){toast("A foto deve ter no máximo 3 MB.");return}
-  const reader=new FileReader();reader.onload=()=>{state.photo=reader.result;update()};reader.readAsDataURL(file);
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){toast("Utilize uma fotografia JPG, PNG ou WebP.");e.target.value="";return}
+  if(file.size>3*1024*1024){toast("A foto deve ter no máximo 3 MB.");e.target.value="";return}
+  const reader=new FileReader();reader.onload=()=>{state.photo=reader.result;update()};reader.onerror=()=>toast("Não foi possível ler a fotografia.");reader.readAsDataURL(file);
 };
 $("#removePhotoBtn").onclick=()=>{state.photo="";$("#photoInput").value="";update()};
 $$(".zoom-btn").forEach(b=>b.onclick=()=>{
@@ -386,5 +407,31 @@ $$(".zoom-btn").forEach(b=>b.onclick=()=>{
   $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 
+// Actualiza a pré-visualização e agenda a gravação automática dos campos simples.
+Object.keys(defaults).forEach(key=>{
+  const field=$("#"+key);
+  if(field)field.addEventListener("input",update);
+});
+
+// Recupera o último rascunho local sem exigir uma acção do utilizador.
+function restoreDraft(){
+  try{
+    const raw=localStorage.getItem("cvbuilder-data");
+    if(!raw)return;
+    const saved=JSON.parse(raw);
+    applyImportedData(saved);
+    toast("Último rascunho recuperado automaticamente.");
+  }catch(error){
+    console.warn("O rascunho guardado não pôde ser recuperado.",error);
+  }
+}
+window.addEventListener("beforeunload",()=>{
+  try{
+    const backup={version:1,data:getData(),...state,savedAt:new Date().toISOString()};
+    localStorage.setItem("cvbuilder-data",JSON.stringify(backup));
+  }catch(error){console.warn(error);}
+});
+
 window.CVBuilder = { state, getData, renderForms, update, toast, exportWord };
+restoreDraft();
 renderForms();update();
