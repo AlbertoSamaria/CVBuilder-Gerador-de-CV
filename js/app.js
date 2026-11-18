@@ -249,6 +249,102 @@ async function importCVFile(file){
   }catch(error){console.error(error);toast(error.message||"Não foi possível importar o documento.");}
 }
 
+
+async function exportWord(){
+  const lib=window.docx;
+  if(!lib||!lib.Document||!lib.Packer){
+    toast("A biblioteca Word não carregou. Verifique a ligação à Internet e actualize a página.");
+    return;
+  }
+  const button=$("#wordBtn");
+  button.disabled=true;
+  const originalLabel=button.textContent;
+  button.textContent="A gerar Word...";
+  try{
+    const d=getData();
+    const children=[];
+    const addParagraph=(text,options={})=>{
+      const value=String(text||"").trim();
+      if(!value)return;
+      children.push(new lib.Paragraph({
+        children:[new lib.TextRun({text:value,bold:!!options.bold,color:options.color||"263445",size:options.size||21})],
+        spacing:{after:options.after??90,before:options.before??0},
+        ...(options.heading?{heading:options.heading}:{})
+      }));
+    };
+    const addSection=(title)=>{
+      children.push(new lib.Paragraph({
+        text:title,
+        heading:lib.HeadingLevel.HEADING_1,
+        spacing:{before:260,after:100},
+        border:{bottom:{color:"D7DEE8",space:5,style:lib.BorderStyle.SINGLE,size:5}}
+      }));
+    };
+    const addLines=(value)=>{
+      lines(value||"").forEach(item=>addParagraph(item,{after:55}));
+    };
+
+    addParagraph(d.fullName||"Currículo", {bold:true,size:36,after:70,color:"17233B"});
+    if(d.jobTitle)addParagraph(d.jobTitle,{bold:true,size:24,color:"315B91",after:130});
+    const contacts=[d.email,d.phone,d.location,d.linkedin].filter(Boolean);
+    if(contacts.length)addParagraph(contacts.join("  |  "),{size:18,color:"536174",after:180});
+    if(d.summary){addSection("Perfil profissional");addParagraph(d.summary,{size:21,after:120});}
+
+    if(state.experience.some(x=>x.title||x.company||x.description)){
+      addSection("Experiência profissional");
+      state.experience.filter(x=>x.title||x.company||x.description).forEach(x=>{
+        addParagraph([x.title,x.company].filter(Boolean).join(" — "),{bold:true,size:22,after:35});
+        const meta=[x.date,x.location].filter(Boolean).join(" | ");
+        if(meta)addParagraph(meta,{size:18,color:"667085",after:55});
+        addLines(x.description);
+      });
+    }
+    if(state.education.some(x=>x.title||x.school)){
+      addSection("Formação académica");
+      state.education.filter(x=>x.title||x.school).forEach(x=>{
+        addParagraph([x.title,x.school].filter(Boolean).join(" — "),{bold:true,size:21,after:35});
+        if(x.date)addParagraph(x.date,{size:18,color:"667085",after:65});
+      });
+    }
+    if(d.skills){addSection("Competências técnicas");addLines(d.skills);}
+    if(d.softSkills){addSection("Competências pessoais");addLines(d.softSkills);}
+    if(state.languages.some(x=>x.name||x.level)){
+      addSection("Idiomas");
+      state.languages.filter(x=>x.name||x.level).forEach(x=>addParagraph([x.name,x.level].filter(Boolean).join(" — "),{after:55}));
+    }
+    if(d.certifications){addSection("Certificações");addLines(d.certifications);}
+    if(d.projects){addSection("Projetos e portfólio");addLines(d.projects);}
+
+    const documentFile=new lib.Document({
+      creator:"CVBuilder",
+      title:"Currículo - "+(d.fullName||"Utilizador"),
+      description:"Currículo criado com CVBuilder",
+      styles:{default:{document:{run:{font:"Arial",size:21,color:"263445"}}}},
+      sections:[{
+        properties:{page:{
+          size:{width:11906,height:16838},
+          margin:{top:850,right:950,bottom:850,left:950}
+        }},
+        children
+      }]
+    });
+    const blob=await lib.Packer.toBlob(documentFile);
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    const base=(d.fullName||"curriculo").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9_-]+/gi,"-").toLowerCase();
+    link.href=url;link.download=(base||"curriculo")+"-cvbuilder.docx";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    toast("Documento Word (.docx) exportado com sucesso.");
+  }catch(error){
+    console.error(error);
+    toast("Não foi possível gerar o documento Word.");
+  }finally{
+    button.disabled=false;
+    button.textContent=originalLabel;
+  }
+}
+
 function loadData(){
   const picker=$("#cvFileInput");
   if(picker){picker.click();return;}
@@ -272,6 +368,7 @@ $("#saveBtn").onclick=saveData;$("#loadBtn").onclick=loadData;
 const cvFileInput=$("#cvFileInput");
 if(cvFileInput)cvFileInput.onchange=async e=>{await importCVFile(e.target.files[0]);e.target.value="";};
 $("#printBtn").onclick=()=>window.print();
+$("#wordBtn").onclick=exportWord;
 $("#resetBtn").onclick=()=>{
   if(!confirm("Limpar todos os dados do currículo?"))return;
   Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=""});
@@ -289,5 +386,5 @@ $$(".zoom-btn").forEach(b=>b.onclick=()=>{
   $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 
-window.CVBuilder = { state, getData, renderForms, update, toast };
+window.CVBuilder = { state, getData, renderForms, update, toast, exportWord };
 renderForms();update();
