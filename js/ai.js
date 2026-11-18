@@ -102,11 +102,14 @@
     applyButton.disabled = true;
     setStatus("A IA está a analisar as informações. Aguarde...", "loading");
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 30000);
     try {
       const response = await fetch("/.netlify/functions/cv-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
       const body = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(body.error || "Não foi possível obter uma resposta da IA.");
@@ -128,8 +131,14 @@
       applyButton.hidden = !pendingSuggestion;
       setStatus(action === "analyze" ? "Análise concluída. Reveja as recomendações." : "Sugestão pronta. Reveja antes de aplicar.", "success");
     } catch (error) {
-      setStatus(error.message || "Ocorreu um erro ao contactar a IA.", "error");
+      const message = error?.name === "AbortError"
+        ? "A IA demorou demasiado tempo a responder. Tente novamente dentro de alguns instantes."
+        : error instanceof TypeError
+          ? "Não foi possível ligar ao serviço de IA. Verifique a ligação à Internet e tente novamente."
+          : error.message || "Ocorreu um erro ao contactar a IA.";
+      setStatus(message, "error");
     } finally {
+      window.clearTimeout(timeoutId);
       actionButtons.forEach(button => { button.disabled = false; });
       applyButton.disabled = false;
     }
