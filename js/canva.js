@@ -1,8 +1,10 @@
 (() => {
   "use strict";
   const $=s=>document.querySelector(s);
-  const connectBtn=$("#canvaConnectBtn");
-  const createBtn=$("#canvaCreateBtn");
+  const connectButtons=[$("#canvaConnectTop"),$("#canvaConnectBtnPanel")].filter(Boolean);
+  const createButtons=[$("#canvaCreateTop"),$("#canvaCreateBtnPanel")].filter(Boolean);
+  const connectBtn=connectButtons[0];
+  const createBtn=createButtons[0];
   const status=$("#canvaStatus");
 
   function setStatus(message,type="") {
@@ -18,30 +20,30 @@
       if(!response.ok) throw new Error(data.error||"Falha ao consultar o Canva.");
       if(!data.configured) {
         setStatus("Canva ainda não configurado no backend.");
-        connectBtn.disabled=true;
-        createBtn.disabled=true;
+        connectButtons.forEach(button=>button.disabled=true);
+        createButtons.forEach(button=>button.disabled=true);
         return;
       }
       if(data.connected) {
         setStatus("Canva ligado. Pode criar um design editável.","success");
         connectBtn.textContent="Canva ligado";
-        createBtn.disabled=false;
+        createButtons.forEach(button=>button.disabled=false);
       } else {
         setStatus("Ligue a sua conta Canva para criar o CV no Canva.");
-        createBtn.disabled=true;
+        createButtons.forEach(button=>button.disabled=true);
       }
     } catch(error) {
       setStatus(error.message||"Não foi possível verificar o Canva.","error");
     }
   }
 
-  connectBtn?.addEventListener("click",()=> {
+  connectButtons.forEach(button=>button.addEventListener("click",()=> {
     window.location.href="/.netlify/functions/canva?action=authorize";
-  });
+  }));
 
-  createBtn?.addEventListener("click",async()=> {
+  createButtons.forEach(button=>button.addEventListener("click",async()=> {
     if(!window.CVBuilder) return;
-    createBtn.disabled=true;
+    createButtons.forEach(button=>button.disabled=true);
     setStatus("A preparar o CV editável para o Canva...","loading");
     try {
       const blob=await window.CVBuilder.buildWordBlob();
@@ -57,7 +59,7 @@
       const result=await response.json().catch(()=>({}));
       if(response.status===401) {
         setStatus("A ligação ao Canva expirou. Ligue novamente a conta.","error");
-        createBtn.disabled=false;
+        createButtons.forEach(button=>button.disabled=false);
         return;
       }
       if(!response.ok) throw new Error(result.error||"Não foi possível enviar o CV para o Canva.");
@@ -66,7 +68,7 @@
     } catch(error) {
       console.error(error);
       setStatus(error.message||"Falha ao criar o design no Canva.","error");
-      createBtn.disabled=false;
+      createButtons.forEach(button=>button.disabled=false);
     }
   });
 
