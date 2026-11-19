@@ -80,7 +80,7 @@ A escolha do modelo altera apenas a apresentação visual; os dados do formulár
 
 ## Funcionalidades avançadas
 
-- A adaptação à vaga utiliza a função de IA já configurada no Netlify e depende da disponibilidade da chave e do serviço Gemini. A sugestão é apresentada para revisão e não deve acrescentar competências ou experiências que o candidato não possua.
+- A adaptação à vaga utiliza a função de IA já configurada no Cloudflare e depende da disponibilidade da chave e do serviço Gemini. A sugestão é apresentada para revisão e não deve acrescentar competências ou experiências que o candidato não possua.
 - A carta de apresentação é gerada localmente a partir dos campos do currículo. O texto pode ser editado, copiado ou exportado em TXT.
 - O histórico mantém até 20 versões no armazenamento local do navegador. Não é uma sincronização na nuvem; limpar os dados do navegador pode eliminar estas versões.
 - A ordem das secções e a preferência de tema claro/escuro também são guardadas localmente no navegador.
@@ -98,13 +98,13 @@ Pode modificar e utilizar o projecto para fins pessoais ou comerciais.
 
 ## Integração com Canva
 
-O CVBuilder inclui uma integração opcional com a Canva REST API através de Netlify Functions.
+O CVBuilder inclui uma integração opcional com a Canva REST API através de Cloudflare Pages Functions.
 
 ### 1. Configuração no Canva Developer Portal
 
 Crie uma app Canva com as REST APIs activadas e configure uma Redirect URL:
 
-`https://cvbuilder-gerador-de-cv.netlify.app/.netlify/functions/canva?action=callback`
+`https://SEU-PROJECTO.pages.dev/api/canva?action=callback`
 
 Para esta arquitectura são usados os seguintes scopes:
 
@@ -118,7 +118,7 @@ Para esta arquitectura são usados os seguintes scopes:
 
 A Design Import usa `design:content:write`. Templates e Autofill usam os scopes de Brand Templates; Assets ficam preparados para a próxima etapa, permitindo tratar fotografias do currículo como campos de imagem.
 
-### 2. Variáveis no Netlify
+### 2. Variáveis no Cloudflare
 
 Configure as seguintes variáveis de ambiente no site:
 
