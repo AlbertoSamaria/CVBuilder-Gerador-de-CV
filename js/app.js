@@ -18,7 +18,7 @@ const defaults = {
 
 function esc(v=""){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function lines(v=""){return v.split(/\n|,/).map(x=>x.trim()).filter(Boolean)}
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),2200)}
+function toast(msg){const t=$$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),2200)}
 
 function repeatForm(type, item, i){
   if(type==="experience") return `<div class="repeat-card">
@@ -51,78 +51,78 @@ function repeatForm(type, item, i){
 }
 
 function renderForms(){
-  $("#experienceForm").innerHTML = state.experience.map((x,i)=>repeatForm("experience",x,i)).join("");
-  $("#educationForm").innerHTML = state.education.map((x,i)=>repeatForm("education",x,i)).join("");
-  $("#languagesForm").innerHTML = state.languages.map((x,i)=>repeatForm("languages",x,i)).join("");
-  $("[data-remove]").forEach(b=>b.onclick=()=>{
+  $$("#experienceForm").innerHTML = state.experience.map((x,i)=>repeatForm("experience",x,i)).join("");
+  $$("#educationForm").innerHTML = state.education.map((x,i)=>repeatForm("education",x,i)).join("");
+  $$("#languagesForm").innerHTML = state.languages.map((x,i)=>repeatForm("languages",x,i)).join("");
+  $$("[data-remove]").forEach(b=>b.onclick=()=>{
     state[b.dataset.remove].splice(+b.dataset.index,1); renderForms(); update();
   });
-  $("[data-type]").forEach(el=>el.addEventListener("input",()=>{
+  $$("[data-type]").forEach(el=>el.addEventListener("input",()=>{
     state[el.dataset.type][+el.dataset.index][el.dataset.field]=el.value; update();
   }));
 }
 
 function getData(){
   const d={...defaults};
-  Object.keys(d).forEach(k=>{const el=$("#"+k); if(el)d[k]=el.value});
+  Object.keys(d).forEach(k=>{const el=$$("#"+k); if(el)d[k]=el.value});
   return d;
 }
 
 function renderCV(){
   const d=getData();
-  $("#cvName").textContent=d.fullName||"O seu nome";
-  $("#cvJob").textContent=d.jobTitle||"Cargo profissional";
-  $("#cvSummary").textContent=d.summary||"Adicione um resumo profissional no formulário.";
-  $("#cvContact").innerHTML=[
+  $$("#cvName").textContent=d.fullName||"O seu nome";
+  $$("#cvJob").textContent=d.jobTitle||"Cargo profissional";
+  $$("#cvSummary").textContent=d.summary||"Adicione um resumo profissional no formulário.";
+  $$("#cvContact").innerHTML=[
     d.email,d.phone,d.location,d.linkedin
   ].filter(Boolean).map(x=>`<div class="contact-item">${esc(x)}</div>`).join("") || `<div class="contact-item">Adicione os seus dados de contacto.</div>`;
 
   const skills=lines(d.skills);
-  $("#cvSkillsBlock").style.display=skills.length?"":"none";
-  $("#cvSkills").innerHTML=skills.map(x=>`<div class="skill"><div class="skill-name">${esc(x)}</div><div class="skill-bar"><i></i></div></div>`).join("");
+  $$("#cvSkillsBlock").style.display=skills.length?"":"none";
+  $$("#cvSkills").innerHTML=skills.map(x=>`<div class="skill"><div class="skill-name">${esc(x)}</div><div class="skill-bar"><i></i></div></div>`).join("");
 
-  $("#cvLanguagesBlock").style.display=state.languages.length?"":"none";
-  $("#cvLanguages").innerHTML=state.languages.map(x=>`<div class="lang"><span>${esc(x.name)}</span><span>${esc(x.level)}</span></div>`).join("");
+  $$("#cvLanguagesBlock").style.display=state.languages.length?"":"none";
+  $$("#cvLanguages").innerHTML=state.languages.map(x=>`<div class="lang"><span>${esc(x.name)}</span><span>${esc(x.level)}</span></div>`).join("");
   const noSidebarThemes=["classic","minimal","executive","elegant","academic","bold","international"];
   const showMainExtras=noSidebarThemes.includes(state.theme);
-  const mainSkills=$("#cvTechnicalSkillsSection");
-  const mainLanguages=$("#cvLanguagesSection");
+  const mainSkills=$$("#cvTechnicalSkillsSection");
+  const mainLanguages=$$("#cvLanguagesSection");
   if(mainSkills){
     mainSkills.hidden=!(showMainExtras&&skills.length);
-    $("#cvTechnicalSkills").innerHTML=skills.map(item=>'<span class="tag">'+esc(item)+'</span>').join("");
+    $$("#cvTechnicalSkills").innerHTML=skills.map(item=>'<span class="tag">'+esc(item)+'</span>').join("");
   }
   if(mainLanguages){
     mainLanguages.hidden=!(showMainExtras&&state.languages.length);
-    $("#cvMainLanguages").innerHTML=state.languages.map(x=>'<div class="entry-desc">'+esc(x.name)+(x.level?' — '+esc(x.level):'')+'</div>').join("");
+    $$("#cvMainLanguages").innerHTML=state.languages.map(x=>'<div class="entry-desc">'+esc(x.name)+(x.level?' — '+esc(x.level):'')+'</div>').join("");
   }
 
-  $("#cvExperience").innerHTML=state.experience.filter(x=>x.title||x.company||x.description).map(x=>`
+  $$("#cvExperience").innerHTML=state.experience.filter(x=>x.title||x.company||x.description).map(x=>`
     <div class="entry"><div class="entry-head"><div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.company)}</div></div><div class="entry-date">${esc(x.date)}</div></div>
     <div class="entry-desc">${esc(x.description)}</div></div>`).join("");
-  $("#cvExperienceSection").style.display=state.experience.some(x=>x.title||x.company||x.description)?"":"none";
+  $$("#cvExperienceSection").style.display=state.experience.some(x=>x.title||x.company||x.description)?"":"none";
 
-  $("#cvEducation").innerHTML=state.education.filter(x=>x.title||x.school).map(x=>`
+  $$("#cvEducation").innerHTML=state.education.filter(x=>x.title||x.school).map(x=>`
     <div class="entry"><div class="entry-head"><div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.school)}</div></div><div class="entry-date">${esc(x.date)}</div></div></div>`).join("");
-  $("#cvEducationSection").style.display=state.education.some(x=>x.title||x.school)?"":"none";
+  $$("#cvEducationSection").style.display=state.education.some(x=>x.title||x.school)?"":"none";
 
   const soft=lines(d.softSkills);
-  $("#cvSoftSkillsSection").style.display=soft.length?"":"none";
-  $("#cvSoftSkills").innerHTML=`<div class="tag-list">${soft.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>`;
+  $$("#cvSoftSkillsSection").style.display=soft.length?"":"none";
+  $$("#cvSoftSkills").innerHTML=`<div class="tag-list">${soft.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>`;
 
   const cert=lines(d.certifications);
-  $("#cvCertificationsSection").style.display=cert.length?"":"none";
-  $("#cvCertifications").innerHTML=cert.map(x=>`<div class="entry-desc">• ${esc(x)}</div>`).join("");
+  $$("#cvCertificationsSection").style.display=cert.length?"":"none";
+  $$("#cvCertifications").innerHTML=cert.map(x=>`<div class="entry-desc">• ${esc(x)}</div>`).join("");
 
   const proj=lines(d.projects);
-  $("#cvProjectsSection").style.display=proj.length?"":"none";
-  $("#cvProjects").innerHTML=proj.map(x=>`<div class="entry-desc">• ${esc(x)}</div>`).join("");
+  $$("#cvProjectsSection").style.display=proj.length?"":"none";
+  $$("#cvProjects").innerHTML=proj.map(x=>`<div class="entry-desc">• ${esc(x)}</div>`).join("");
 
-  const img=$("#photoPreview");
-  const cvImg=$("#cvPhoto");
-  if(state.photo){img.src=state.photo;img.style.display="block";$("#photoPlaceholder").style.display="none";cvImg.src=state.photo;cvImg.style.display="block"}
-  else{img.style.display="none";$("#photoPlaceholder").style.display="";cvImg.style.display="none"}
+  const img=$$("#photoPreview");
+  const cvImg=$$("#cvPhoto");
+  if(state.photo){img.src=state.photo;img.style.display="block";$$("#photoPlaceholder").style.display="none";cvImg.src=state.photo;cvImg.style.display="block"}
+  else{img.style.display="none";$$("#photoPlaceholder").style.display="";cvImg.style.display="none"}
 
-  $("#cvPreview").className=`cv ${state.theme}`;
+  $$("#cvPreview").className=`cv ${state.theme}`;
   updateProgress();
 }
 
@@ -133,7 +133,7 @@ function updateProgress(){
   filled += state.education.some(x=>x.title||x.school)?1:0;
   filled += state.languages.some(x=>x.name)?1:0;
   const p=Math.min(100,Math.round(filled/total*100));
-  $("#progressBar").style.width=p+"%";$("#progressText").textContent=p+"%";
+  $$("#progressBar").style.width=p+"%";$$("#progressText").textContent=p+"%";
 }
 let autosaveTimer = null;
 function persistDraft(){
@@ -168,7 +168,7 @@ function saveData(){
 function applyImportedData(s){
   if(!s||typeof s!=="object"||Array.isArray(s)||!s.data||typeof s.data!=="object"||Array.isArray(s.data))throw new Error("Ficheiro de currículo inválido.");
   const limitText=(value,max)=>typeof value==="string"?value.slice(0,max):"";
-  Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=limitText(s.data[k],k==="summary"?5000:3000)});
+  Object.keys(defaults).forEach(k=>{if($$("#"+k))$$("#"+k).value=limitText(s.data[k],k==="summary"?5000:3000)});
   state.theme=["modern","classic","minimal","executive","corporate","elegant","tech","creative","academic","ats","green","bold","international"].includes(s.theme)?s.theme:"modern";
   state.photo=typeof s.photo==="string"&&s.photo.length<=4200000&&/^data:image\/(?:png|jpeg|webp);base64,/i.test(s.photo)?s.photo:"";
   const cleanItems=(items,fields,maxItems=30)=>Array.isArray(items)?items.slice(0,maxItems).filter(item=>item&&typeof item==="object"&&!Array.isArray(item)).map(item=>Object.fromEntries(fields.map(([key,max])=>[key,limitText(item[key],max)]))):[];
@@ -285,7 +285,7 @@ async function exportWord(){
     toast("A biblioteca Word não carregou. Verifique a ligação à Internet e actualize a página.");
     return;
   }
-  const button=$("#wordBtn");
+  const button=$$("#wordBtn");
   button.disabled=true;
   const originalLabel=button.textContent;
   button.textContent="A gerar Word...";
@@ -392,7 +392,7 @@ async function exportWord(){
 }
 
 function loadData(){
-  const picker=$("#cvFileInput");
+  const picker=$$("#cvFileInput");
   if(picker){picker.click();return;}
   const raw=localStorage.getItem("cvbuilder-data");
   if(!raw){toast("Não existe um currículo guardado.");return}
@@ -402,52 +402,52 @@ function loadData(){
 
 function setTheme(theme){
   state.theme=theme;
-  $(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
-  $("#cvPreview").className=`cv ${theme}`;
+  $$(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
+  $$("#cvPreview").className=`cv ${theme}`;
 }
 
-$("#addExperience").onclick=()=>{state.experience.push({title:"",company:"",date:"",location:"",description:""});renderForms();update()}
-$("#addEducation").onclick=()=>{state.education.push({title:"",school:"",date:""});renderForms();update()}
-$("#addLanguage").onclick=()=>{state.languages.push({name:"",level:""});renderForms();update()}
-$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
-$("#saveBtn").onclick=saveData;$("#loadBtn").onclick=loadData;
-const cvFileInput=$("#cvFileInput");
+$$("#addExperience").onclick=()=>{state.experience.push({title:"",company:"",date:"",location:"",description:""});renderForms();update()}
+$$("#addEducation").onclick=()=>{state.education.push({title:"",school:"",date:""});renderForms();update()}
+$$("#addLanguage").onclick=()=>{state.languages.push({name:"",level:""});renderForms();update()}
+$$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
+$$("#saveBtn").onclick=saveData;$$("#loadBtn").onclick=loadData;
+const cvFileInput=$$("#cvFileInput");
 if(cvFileInput)cvFileInput.onchange=async e=>{await importCVFile(e.target.files[0]);e.target.value="";};
-$("#printBtn").onclick=()=>window.print();
-$("#wordBtn").onclick=exportWord;
-$("#resetBtn").onclick=()=>{
+$$("#printBtn").onclick=()=>window.print();
+$$("#wordBtn").onclick=exportWord;
+$$("#resetBtn").onclick=()=>{
   if(!confirm("Limpar todos os dados do currículo?"))return;
-  Object.keys(defaults).forEach(k=>{if($("#"+k))$("#"+k).value=""});
+  Object.keys(defaults).forEach(k=>{if($$("#"+k))$$("#"+k).value=""});
   state.photo="";state.experience=[];state.education=[];state.languages=[];state.zoom=window.matchMedia("(max-width: 650px)").matches?0.55:1;zoomAdjusted=false;
-  $("#photoInput").value="";$("#cvPreview").style.transform="";$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
+  $$("#photoInput").value="";$$("#cvPreview").style.transform="";$$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
   setTheme("modern");renderForms();update();
   clearTimeout(autosaveTimer);
   try{localStorage.removeItem("cvbuilder-data");}catch(error){console.warn(error);}
   toast("Formulário limpo.");
 };
-$("#photoInput").onchange=e=>{
+$$("#photoInput").onchange=e=>{
   const file=e.target.files[0];if(!file)return;
   if(!["image/jpeg","image/png","image/webp"].includes(file.type)){toast("Utilize uma fotografia JPG, PNG ou WebP.");e.target.value="";return}
   if(file.size>3*1024*1024){toast("A foto deve ter no máximo 3 MB.");e.target.value="";return}
   const reader=new FileReader();reader.onload=()=>{state.photo=reader.result;update()};reader.onerror=()=>toast("Não foi possível ler a fotografia.");reader.readAsDataURL(file);
 };
-$("#removePhotoBtn").onclick=()=>{state.photo="";$("#photoInput").value="";update()};
+$$("#removePhotoBtn").onclick=()=>{state.photo="";$$("#photoInput").value="";update()};
 $$(".zoom-btn").forEach(b=>b.onclick=()=>{
   zoomAdjusted=true;
   state.zoom=Math.max(.35,Math.min(1.3,state.zoom+Number(b.dataset.zoom)));
-  $("#cvPreview").style.transform=`scale(${state.zoom})`;
-  $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
+  $$("#cvPreview").style.transform=`scale(${state.zoom})`;
+  $$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 window.addEventListener("resize",()=>{
   if(zoomAdjusted)return;
   state.zoom=window.matchMedia("(max-width: 650px)").matches?0.55:1;
-  $("#cvPreview").style.transform="";
-  $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
+  $$("#cvPreview").style.transform="";
+  $$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 });
 
 // Actualiza a pré-visualização e agenda a gravação automática dos campos simples.
 Object.keys(defaults).forEach(key=>{
-  const field=$("#"+key);
+  const field=$$("#"+key);
   if(field)field.addEventListener("input",update);
 });
 
@@ -471,6 +471,6 @@ window.addEventListener("beforeunload",()=>{
 });
 
 window.CVBuilder = { state, getData, renderForms, update, toast, exportWord, applyImportedData, setTheme };
-$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
+$$("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 restoreDraft();
 renderForms();update();
