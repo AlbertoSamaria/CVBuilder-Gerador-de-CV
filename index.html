@@ -24,6 +24,8 @@
       <button class="btn btn-light" id="saveBtn">Guardar</button>
       <button class="btn btn-primary" id="printBtn">Exportar PDF</button>
       <button class="btn btn-light" id="wordBtn" type="button">Exportar Word</button>
+      <button class="btn btn-light canva-top-btn" id="canvaConnectBtn" type="button">Ligar Canva</button>
+      <button class="btn btn-primary canva-top-btn" id="canvaCreateBtn" type="button" disabled>Criar no Canva</button>
       <button class="btn btn-light" id="themeToggle" type="button" aria-pressed="false">Modo escuro ☾</button>
     </div>
   </header>
@@ -178,6 +180,25 @@
       </section>
 
 
+      <section class="form-section" id="canvaSection">
+        <div class="section-title"><span>08</span><h2>Canva</h2></div>
+        <div class="canva-panel">
+          <div class="canva-heading">
+            <div class="canva-logo">C</div>
+            <div>
+              <strong>Design profissional no Canva</strong>
+              <p>Transforme o currículo actual num documento editável no Canva e continue a personalização no editor.</p>
+            </div>
+          </div>
+          <div class="canva-actions">
+            <button class="btn btn-light" id="canvaConnectBtnPanel" type="button">Ligar conta Canva</button>
+            <button class="btn btn-primary" id="canvaCreateBtnPanel" type="button" disabled>Criar no Canva</button>
+          </div>
+          <div class="canva-status" id="canvaStatus" role="status" aria-live="polite">A verificar ligação ao Canva...</div>
+          <p class="canva-note">A primeira versão usa Design Import: o CVBuilder gera um Word editável e o Canva converte-o num design editável. Os modelos locais continuam disponíveis como fallback.</p>
+        </div>
+      </section>
+
       <section class="form-section" id="advancedFeatures">
         <div class="section-title"><span>09</span><h2>Adaptação à vaga</h2></div>
         <div class="feature-panel">
@@ -322,5 +343,6 @@
   <script src="js/ats.js"></script>
   <script src="js/ai.js"></script>
   <script src="js/features.js"></script>
+  <script src="js/canva.js"></script>
 </body>
 </html>
