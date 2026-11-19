@@ -54,10 +54,10 @@ function renderForms(){
   $("#experienceForm").innerHTML = state.experience.map((x,i)=>repeatForm("experience",x,i)).join("");
   $("#educationForm").innerHTML = state.education.map((x,i)=>repeatForm("education",x,i)).join("");
   $("#languagesForm").innerHTML = state.languages.map((x,i)=>repeatForm("languages",x,i)).join("");
-  $("[data-remove]").forEach(b=>b.onclick=()=>{
+  $$("[data-remove]").forEach(b=>b.onclick=()=>{
     state[b.dataset.remove].splice(+b.dataset.index,1); renderForms(); update();
   });
-  $("[data-type]").forEach(el=>el.addEventListener("input",()=>{
+  $$("[data-type]").forEach(el=>el.addEventListener("input",()=>{
     state[el.dataset.type][+el.dataset.index][el.dataset.field]=el.value; update();
   }));
 }
