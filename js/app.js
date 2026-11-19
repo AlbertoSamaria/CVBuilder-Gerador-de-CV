@@ -279,6 +279,48 @@ async function importCVFile(file){
 }
 
 
+async function buildWordBlob(){
+  const lib=window.docx;
+  if(!lib||!lib.Document||!lib.Packer) throw new Error("A biblioteca Word não carregou.");
+  const d=getData();
+  const children=[];
+  const addParagraph=(text,options={})=>{
+    const value=String(text||"").trim();
+    if(!value)return;
+    children.push(new lib.Paragraph({
+      children:[new lib.TextRun({text:value,bold:!!options.bold,color:options.color||"263445",size:options.size||21})],
+      spacing:{after:options.after??90,before:options.before??0},
+      ...(options.heading?{heading:options.heading}:{})
+    }));
+  };
+  const addSection=(title)=>{
+    children.push(new lib.Paragraph({
+      text:title,
+      heading:lib.HeadingLevel.HEADING_1,
+      spacing:{before:260,after:100},
+      border:{bottom:{color:"D7DEE8",space:5,style:lib.BorderStyle.SINGLE,size:5}}
+    }));
+  };
+  const addLines=(value)=>lines(value||"").forEach(item=>addParagraph(item,{after:55}));
+  addParagraph(d.fullName||"Currículo",{bold:true,size:36,after:70,color:"17233B"});
+  if(d.jobTitle)addParagraph(d.jobTitle,{bold:true,size:24,color:"315B91",after:130});
+  const contacts=[d.email,d.phone,d.location,d.linkedin].filter(Boolean);
+  if(contacts.length)addParagraph(contacts.join("  |  "),{size:18,color:"536174",after:180});
+  const sectionExporters={
+    cvSummarySection:()=>{if(d.summary){addSection("Perfil profissional");addParagraph(d.summary,{size:21,after:120});}},
+    cvExperienceSection:()=>{if(!state.experience.some(x=>x.title||x.company||x.description))return;addSection("Experiência profissional");state.experience.filter(x=>x.title||x.company||x.description).forEach(x=>{addParagraph([x.title,x.company].filter(Boolean).join(" — "),{bold:true,size:22,after:35});const meta=[x.date,x.location].filter(Boolean).join(" | ");if(meta)addParagraph(meta,{size:18,color:"667085",after:55});addLines(x.description);});},
+    cvEducationSection:()=>{if(!state.education.some(x=>x.title||x.school))return;addSection("Formação académica");state.education.filter(x=>x.title||x.school).forEach(x=>{addParagraph([x.title,x.school].filter(Boolean).join(" — "),{bold:true,size:21,after:35});if(x.date)addParagraph(x.date,{size:18,color:"667085",after:65});});},
+    cvTechnicalSkillsSection:()=>{if(d.skills){addSection("Competências técnicas");addLines(d.skills);}},
+    cvSoftSkillsSection:()=>{if(d.softSkills){addSection("Competências pessoais");addLines(d.softSkills);}},
+    cvLanguagesSection:()=>{if(state.languages.some(x=>x.name||x.level)){addSection("Idiomas");state.languages.filter(x=>x.name||x.level).forEach(x=>addParagraph([x.name,x.level].filter(Boolean).join(" — "),{after:55}));}},
+    cvCertificationsSection:()=>{if(d.certifications){addSection("Certificações");addLines(d.certifications);}},
+    cvProjectsSection:()=>{if(d.projects){addSection("Projetos e portfólio");addLines(d.projects);}}
+  };
+  [...document.querySelectorAll("#cvPreview .cv-main > .cv-section")].map(e=>e.id).filter(id=>sectionExporters[id]).forEach(id=>sectionExporters[id]());
+  const documentFile=new lib.Document({creator:"CVBuilder",title:"Currículo - "+(d.fullName||"Utilizador"),description:"Currículo criado com CVBuilder",styles:{default:{document:{run:{font:"Arial",size:21,color:"263445"}}}},sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:850,right:950,bottom:850,left:950}}},children}]});
+  return lib.Packer.toBlob(documentFile);
+}
+
 async function exportWord(){
   const lib=window.docx;
   if(!lib||!lib.Document||!lib.Packer){
@@ -470,7 +512,7 @@ window.addEventListener("beforeunload",()=>{
   }catch(error){console.warn(error);}
 });
 
-window.CVBuilder = { state, getData, renderForms, update, toast, exportWord, applyImportedData, setTheme };
+window.CVBuilder = { state, getData, renderForms, update, toast, exportWord, buildWordBlob, applyImportedData, setTheme };
 $("#zoomText").textContent=Math.round(state.zoom*100)+"%";
 restoreDraft();
 renderForms();update();
