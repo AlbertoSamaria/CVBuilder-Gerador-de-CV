@@ -178,7 +178,7 @@
 
   async function getStatus() {
     try {
-      const response = await fetch("/.netlify/functions/canva?action=status", { cache: "no-store" });
+      const response = await fetch("/api/canva.php?action=status", { cache: "no-store" });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Falha ao consultar o Canva.");
 
@@ -211,7 +211,7 @@
 
   connectButtons.forEach(button => {
     button.addEventListener("click", () => {
-      window.location.href = "/.netlify/functions/canva?action=authorize";
+      window.location.href = "/api/canva.php?action=authorize";
     });
   });
 
@@ -230,7 +230,7 @@
         form.append("title", "CV - " + (safe || "Currículo"));
         form.append("file", blob, (safe || "curriculo") + ".docx");
 
-        const response = await fetch("/.netlify/functions/canva?action=import", {
+        const response = await fetch("/api/canva.php?action=import", {
           method: "POST",
           body: form
         });
@@ -259,7 +259,7 @@
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       const response = await fetch(
-        "/.netlify/functions/canva?action=import-status&jobId=" + encodeURIComponent(jobId),
+        "/api/canva.php?action=import-status&jobId=" + encodeURIComponent(jobId),
         { cache: "no-store" }
       );
       const data = await response.json().catch(() => ({}));
@@ -299,7 +299,7 @@
     try {
       const query = templateSearch?.value?.trim() || "";
       const response = await fetch(
-        "/.netlify/functions/canva?action=templates&query=" + encodeURIComponent(query),
+        "/api/canva.php?action=templates&query=" + encodeURIComponent(query),
         { cache: "no-store" }
       );
       const data = await response.json().catch(() => ({}));
@@ -360,7 +360,7 @@
 
     try {
       const response = await fetch(
-        "/.netlify/functions/canva?action=template-dataset&templateId=" + encodeURIComponent(templateId),
+        "/api/canva.php?action=template-dataset&templateId=" + encodeURIComponent(templateId),
         { cache: "no-store" }
       );
       const data = await response.json().catch(() => ({}));
@@ -446,7 +446,7 @@
     autofillStatus.className = "canva-status loading";
 
     try {
-      const response = await fetch("/.netlify/functions/canva?action=autofill", {
+      const response = await fetch("/api/canva.php?action=autofill", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -471,7 +471,7 @@
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       const response = await fetch(
-        "/.netlify/functions/canva?action=autofill-status&jobId=" + encodeURIComponent(jobId),
+        "/api/canva.php?action=autofill-status&jobId=" + encodeURIComponent(jobId),
         { cache: "no-store" }
       );
       const data = await response.json().catch(() => ({}));
