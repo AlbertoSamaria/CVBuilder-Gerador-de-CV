@@ -54,10 +54,10 @@ function renderForms(){
   $("#experienceForm").innerHTML = state.experience.map((x,i)=>repeatForm("experience",x,i)).join("");
   $("#educationForm").innerHTML = state.education.map((x,i)=>repeatForm("education",x,i)).join("");
   $("#languagesForm").innerHTML = state.languages.map((x,i)=>repeatForm("languages",x,i)).join("");
-  $$$("[data-remove]").forEach(b=>b.onclick=()=>{
+  $("[data-remove]").forEach(b=>b.onclick=()=>{
     state[b.dataset.remove].splice(+b.dataset.index,1); renderForms(); update();
   });
-  $$$("[data-type]").forEach(el=>el.addEventListener("input",()=>{
+  $("[data-type]").forEach(el=>el.addEventListener("input",()=>{
     state[el.dataset.type][+el.dataset.index][el.dataset.field]=el.value; update();
   }));
 }
@@ -402,14 +402,14 @@ function loadData(){
 
 function setTheme(theme){
   state.theme=theme;
-  $$$(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
+  $(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
   $("#cvPreview").className=`cv ${theme}`;
 }
 
 $("#addExperience").onclick=()=>{state.experience.push({title:"",company:"",date:"",location:"",description:""});renderForms();update()}
 $("#addEducation").onclick=()=>{state.education.push({title:"",school:"",date:""});renderForms();update()}
 $("#addLanguage").onclick=()=>{state.languages.push({name:"",level:""});renderForms();update()}
-$$$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
+$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
 $("#saveBtn").onclick=saveData;$("#loadBtn").onclick=loadData;
 const cvFileInput=$("#cvFileInput");
 if(cvFileInput)cvFileInput.onchange=async e=>{await importCVFile(e.target.files[0]);e.target.value="";};
