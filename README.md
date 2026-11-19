@@ -139,7 +139,7 @@ O botão **Criar no Canva** gera um documento Word a partir dos dados actuais e 
 
 A secção **Templates Canva** consulta Brand Templates disponíveis para a conta, filtra templates com campos de dados, lê o dataset do template e permite confirmar/editar os valores antes de iniciar o Autofill.
 
-O Autofill depende da disponibilidade de Brand Templates/Autofill na conta Canva. Quando não estiver disponível, os 14 modelos locais do CVBuilder continuam a funcionar normalmente.
+O Autofill depende da disponibilidade de Brand Templates/Autofill na conta Canva. Quando não estiver disponível, os 13 modelos locais do CVBuilder continuam a funcionar normalmente.
 
 ### 4. Fallback local
 
