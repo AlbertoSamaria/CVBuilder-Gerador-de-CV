@@ -402,14 +402,14 @@ function loadData(){
 
 function setTheme(theme){
   state.theme=theme;
-  $(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
+  $$(".style-option").forEach(b=>b.classList.toggle("active",b.dataset.theme===theme));
   $("#cvPreview").className=`cv ${theme}`;
 }
 
 $("#addExperience").onclick=()=>{state.experience.push({title:"",company:"",date:"",location:"",description:""});renderForms();update()}
 $("#addEducation").onclick=()=>{state.education.push({title:"",school:"",date:""});renderForms();update()}
 $("#addLanguage").onclick=()=>{state.languages.push({name:"",level:""});renderForms();update()}
-$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
+$$(".style-option").forEach(b=>b.onclick=()=>{setTheme(b.dataset.theme);update()});
 $("#saveBtn").onclick=saveData;$("#loadBtn").onclick=loadData;
 const cvFileInput=$("#cvFileInput");
 if(cvFileInput)cvFileInput.onchange=async e=>{await importCVFile(e.target.files[0]);e.target.value="";};
@@ -432,7 +432,7 @@ $("#photoInput").onchange=e=>{
   const reader=new FileReader();reader.onload=()=>{state.photo=reader.result;update()};reader.onerror=()=>toast("Não foi possível ler a fotografia.");reader.readAsDataURL(file);
 };
 $("#removePhotoBtn").onclick=()=>{state.photo="";$("#photoInput").value="";update()};
-$(".zoom-btn").forEach(b=>b.onclick=()=>{
+$$(".zoom-btn").forEach(b=>b.onclick=()=>{
   zoomAdjusted=true;
   state.zoom=Math.max(.35,Math.min(1.3,state.zoom+Number(b.dataset.zoom)));
   $("#cvPreview").style.transform=`scale(${state.zoom})`;
