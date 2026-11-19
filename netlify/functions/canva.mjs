@@ -29,12 +29,16 @@ function randomString(length = 64) {
   return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("").slice(0, length);
 }
 
-function bytesToBase64Url(bytes) {
+function bytesToBase64(bytes) {
   let binary = "";
   bytes.forEach(byte => {
     binary += String.fromCharCode(byte);
   });
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  return btoa(binary);
+}
+
+function bytesToBase64Url(bytes) {
+  return bytesToBase64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 
 function base64UrlToBytes(value) {
@@ -330,10 +334,7 @@ export default async function handler(request) {
         status: 302,
         headers: {
           Location: "/?canva=connected",
-          "Set-Cookie": [
-            cookie("cv_canva_session", encrypted, { maxAge: 60 * 60 * 24 * 30 }),
-            cookie("cv_canva_oauth", "", { maxAge: 0 })
-          ].join(", ")
+          "Set-Cookie": cookie("cv_canva_session", encrypted, { maxAge: 60 * 60 * 24 * 30 })
         }
       });
     } catch (error) {
@@ -375,7 +376,7 @@ export default async function handler(request) {
         .slice(0, 50) || "CVBuilder";
 
       const metadata = JSON.stringify({
-        title_base64: bytesToBase64Url(new TextEncoder().encode(title)),
+        title_base64: bytesToBase64(new TextEncoder().encode(title)),
         mime_type: file.type || "application/octet-stream"
       });
 
