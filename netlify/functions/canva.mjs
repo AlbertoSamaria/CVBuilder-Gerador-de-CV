@@ -25,10 +25,14 @@ function randomString(length=64) {
   return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("").slice(0,length);
 }
 
-function base64url(bytes) {
+function base64(bytes) {
   let binary="";
   bytes.forEach(b=>binary+=String.fromCharCode(b));
-  return btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  return btoa(binary);
+}
+
+function base64url(bytes) {
+  return base64(bytes).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 }
 
 async function sha256(value) {
@@ -167,7 +171,7 @@ export default async function handler(request) {
       if(file.type && !allowed.includes(file.type)) return json(400,{error:"Para o Canva, use PDF ou Word (.doc/.docx)."});
       const title=String(form.get("title")||file.name||"CVBuilder").replace(/[^\p{L}\p{N}\s._-]/gu,"").trim().slice(0,50)||"CVBuilder";
       const metadata=JSON.stringify({
-        title_base64:base64url(new TextEncoder().encode(title)),
+        title_base64:base64(new TextEncoder().encode(title)),
         mime_type:file.type||"application/octet-stream"
       });
       const created=await canvaRequest("/imports",token,{
