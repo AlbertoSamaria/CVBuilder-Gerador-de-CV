@@ -83,7 +83,7 @@
         const design=job.result?.designs?.[0];
         if(!design?.urls?.edit_url) throw new Error("O Canva concluiu a importação, mas não devolveu o link de edição.");
         setStatus("CV criado no Canva. A abrir o editor...","success");
-        window.open(design.urls.edit_url,"_blank","noopener,noreferrer");
+        window.location.href=design.urls.edit_url;
         createButtons.forEach(button=>button.disabled=false);
         return;
       }
