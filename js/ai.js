@@ -105,7 +105,7 @@
     const controller = new AbortController();
     const timeoutId = window.setTimeout(() => controller.abort(), 30000);
     try {
-      const response = await fetch("/.netlify/functions/cv-ai", {
+      const response = await fetch("/api/cv-ai.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
