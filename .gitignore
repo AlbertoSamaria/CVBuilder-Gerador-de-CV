@@ -8,3 +8,12 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Build e desenvolvimento Cloudflare
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
