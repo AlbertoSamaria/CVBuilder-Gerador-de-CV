@@ -94,3 +94,57 @@ Os dados do currículo são processados no navegador e guardados localmente. As 
 ## Licença
 
 Pode modificar e utilizar o projecto para fins pessoais ou comerciais.
+
+
+## Integração com Canva
+
+O CVBuilder inclui uma integração opcional com a Canva REST API através de Netlify Functions.
+
+### 1. Configuração no Canva Developer Portal
+
+Crie uma app Canva com as REST APIs activadas e configure uma Redirect URL:
+
+`https://cvbuilder-gerador-de-cv.netlify.app/.netlify/functions/canva?action=callback`
+
+Para esta arquitectura são usados os seguintes scopes:
+
+- `design:content:read`
+- `design:content:write`
+- `design:meta:read`
+- `brandtemplate:meta:read`
+- `brandtemplate:content:read`
+- `asset:read`
+- `asset:write`
+
+A Design Import usa `design:content:write`. Templates e Autofill usam os scopes de Brand Templates; Assets ficam preparados para a próxima etapa, permitindo tratar fotografias do currículo como campos de imagem.
+
+### 2. Variáveis no Netlify
+
+Configure as seguintes variáveis de ambiente no site:
+
+- `CANVA_CLIENT_ID`
+- `CANVA_CLIENT_SECRET`
+- `CANVA_REDIRECT_URI`
+- `CANVA_SESSION_SECRET`
+
+`CANVA_CLIENT_SECRET` e `CANVA_SESSION_SECRET` são segredos de backend e não devem ser colocados no código frontend.
+
+### 3. Fluxos disponíveis
+
+**Design Import**
+
+O botão **Criar no Canva** gera um documento Word a partir dos dados actuais e envia-o para a Design Import API. O Canva processa a importação de forma assíncrona e devolve um link temporário para abrir o design no editor.
+
+**Templates + Autofill**
+
+A secção **Templates Canva** consulta Brand Templates disponíveis para a conta, filtra templates com campos de dados, lê o dataset do template e permite confirmar/editar os valores antes de iniciar o Autofill.
+
+O Autofill depende da disponibilidade de Brand Templates/Autofill na conta Canva. Quando não estiver disponível, os 14 modelos locais do CVBuilder continuam a funcionar normalmente.
+
+### 4. Fallback local
+
+A integração Canva é opcional. Se a conta não estiver ligada, a API estiver indisponível ou a conta não tiver acesso a templates/Autofill, o utilizador continua a poder criar e exportar o currículo através dos modelos locais.
+
+### 5. Segurança
+
+A autenticação Canva é feita exclusivamente no backend. O fluxo utiliza OAuth 2.0 com PKCE e o estado OAuth é validado no callback. Os tokens são mantidos numa sessão HttpOnly protegida no backend; o frontend não recebe o access token.
