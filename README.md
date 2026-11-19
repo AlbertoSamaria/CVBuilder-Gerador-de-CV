@@ -148,3 +148,49 @@ A integração Canva é opcional. Se a conta não estiver ligada, a API estiver 
 ### 5. Segurança
 
 A autenticação Canva é feita exclusivamente no backend. O fluxo utiliza OAuth 2.0 com PKCE e o estado OAuth é validado no callback. Os tokens são mantidos numa sessão HttpOnly protegida no backend; o frontend não recebe o access token.
+
+
+## Alojamento Cloudflare Pages
+
+O frontend é publicado no Cloudflare Pages. As funções de backend são executadas como Pages Functions nos caminhos `/api/cv-ai` e `/api/canva`. Os módulos originais em `netlify/functions/` são mantidos como lógica partilhada e não são copiados para a pasta pública `dist/`.
+
+### Configuração de build
+
+- Repositório: `AlbertoSamaria/CVBuilder-Gerador-de-CV`
+- Branch inicial de validação: `migration/cloudflare-pages-workers`
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: raiz do repositório
+- Compatibilidade: `nodejs_compat`, definida em `wrangler.toml`
+
+O script `scripts/build.mjs` copia apenas `index.html`, `favicon.svg`, `css/`, `js/` e `vendor/` para `dist/`. As funções e os ficheiros de configuração não são publicados como recursos estáticos.
+
+### Variáveis e segredos
+
+No painel Cloudflare Pages, abre **Settings → Variables and Secrets** e configura as variáveis para Production e Preview:
+
+| Nome | Tipo |
+|---|---|
+| `GEMINI_API_KEY` | Secret |
+| `CANVA_CLIENT_ID` | Text |
+| `CANVA_CLIENT_SECRET` | Secret |
+| `CANVA_REDIRECT_URI` | Text |
+| `CANVA_SESSION_SECRET` | Secret |
+
+Não coloques valores secretos no GitHub, no frontend ou em ficheiros públicos. Depois de adicionar ou alterar variáveis, publica um novo deployment.
+
+### Configurar OAuth Canva
+
+Depois de criares o projecto Pages, copia o domínio real atribuído pela Cloudflare e define exactamente:
+
+`https://TEU-PROJECTO.pages.dev/api/canva?action=callback`
+
+Usa o mesmo URL em `CANVA_REDIRECT_URI` no Cloudflare e na lista de Redirect URLs da aplicação no Canva Developer Portal. Não uses o domínio Netlify antigo.
+
+### Testes após publicação
+
+- `https://TEU-PROJECTO.pages.dev/api/cv-ai` — deve devolver JSON com `service: "cv-ai"` e `status: "ready"`.
+- `https://TEU-PROJECTO.pages.dev/api/canva?action=status` — deve devolver JSON com `service: "canva"` e o estado `configured`.
+- Testa também a ligação OAuth, Design Import, Templates e Autofill. A disponibilidade de Templates e Autofill depende das permissões concedidas pela Canva.
+
+Os dados do currículo, os 13 modelos locais, o armazenamento local, a importação e as exportações continuam no frontend. A integração Canva é opcional e o CVBuilder mantém o funcionamento local mesmo sem credenciais Canva.
