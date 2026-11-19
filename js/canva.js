@@ -84,7 +84,7 @@
         if(!design?.urls?.edit_url) throw new Error("O Canva concluiu a importação, mas não devolveu o link de edição.");
         setStatus("CV criado no Canva. A abrir o editor...","success");
         window.open(design.urls.edit_url,"_blank","noopener,noreferrer");
-        createBtn.disabled=false;
+        createButtons.forEach(button=>button.disabled=false);
         return;
       }
       if(job.status==="failed") throw new Error(job.error?.message||"O Canva não conseguiu importar este documento.");
