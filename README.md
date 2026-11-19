@@ -80,7 +80,7 @@ A escolha do modelo altera apenas a apresentação visual; os dados do formulár
 
 ## Funcionalidades avançadas
 
-- A adaptação à vaga utiliza a função de IA já configurada no Netlify e depende da disponibilidade da chave e do serviço Gemini. A sugestão é apresentada para revisão e não deve acrescentar competências ou experiências que o candidato não possua.
+- A adaptação à vaga utiliza a função de IA já configurada no Cloudflare e depende da disponibilidade da chave e do serviço Gemini. A sugestão é apresentada para revisão e não deve acrescentar competências ou experiências que o candidato não possua.
 - A carta de apresentação é gerada localmente a partir dos campos do currículo. O texto pode ser editado, copiado ou exportado em TXT.
 - O histórico mantém até 20 versões no armazenamento local do navegador. Não é uma sincronização na nuvem; limpar os dados do navegador pode eliminar estas versões.
 - A ordem das secções e a preferência de tema claro/escuro também são guardadas localmente no navegador.
@@ -98,13 +98,13 @@ Pode modificar e utilizar o projecto para fins pessoais ou comerciais.
 
 ## Integração com Canva
 
-O CVBuilder inclui uma integração opcional com a Canva REST API através de Netlify Functions.
+O CVBuilder inclui uma integração opcional com a Canva REST API através de Cloudflare Pages Functions.
 
 ### 1. Configuração no Canva Developer Portal
 
 Crie uma app Canva com as REST APIs activadas e configure uma Redirect URL:
 
-`https://cvbuilder-gerador-de-cv.netlify.app/.netlify/functions/canva?action=callback`
+`https://SEU-PROJECTO.pages.dev/api/canva?action=callback`
 
 Para esta arquitectura são usados os seguintes scopes:
 
@@ -118,7 +118,7 @@ Para esta arquitectura são usados os seguintes scopes:
 
 A Design Import usa `design:content:write`. Templates e Autofill usam os scopes de Brand Templates; Assets ficam preparados para a próxima etapa, permitindo tratar fotografias do currículo como campos de imagem.
 
-### 2. Variáveis no Netlify
+### 2. Variáveis no Cloudflare
 
 Configure as seguintes variáveis de ambiente no site:
 
@@ -148,3 +148,49 @@ A integração Canva é opcional. Se a conta não estiver ligada, a API estiver 
 ### 5. Segurança
 
 A autenticação Canva é feita exclusivamente no backend. O fluxo utiliza OAuth 2.0 com PKCE e o estado OAuth é validado no callback. Os tokens são mantidos numa sessão HttpOnly protegida no backend; o frontend não recebe o access token.
+
+
+## Alojamento Cloudflare Pages
+
+O frontend é publicado no Cloudflare Pages. As funções de backend são executadas como Pages Functions nos caminhos `/api/cv-ai` e `/api/canva`. Os módulos originais em `netlify/functions/` são mantidos como lógica partilhada e não são copiados para a pasta pública `dist/`.
+
+### Configuração de build
+
+- Repositório: `AlbertoSamaria/CVBuilder-Gerador-de-CV`
+- Branch inicial de validação: `migration/cloudflare-pages-workers`
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: raiz do repositório
+- Compatibilidade: `nodejs_compat`, definida em `wrangler.toml`
+
+O script `scripts/build.mjs` copia apenas `index.html`, `favicon.svg`, `css/`, `js/` e `vendor/` para `dist/`. As funções e os ficheiros de configuração não são publicados como recursos estáticos.
+
+### Variáveis e segredos
+
+No painel Cloudflare Pages, abre **Settings → Variables and Secrets** e configura as variáveis para Production e Preview:
+
+| Nome | Tipo |
+|---|---|
+| `GEMINI_API_KEY` | Secret |
+| `CANVA_CLIENT_ID` | Text |
+| `CANVA_CLIENT_SECRET` | Secret |
+| `CANVA_REDIRECT_URI` | Text |
+| `CANVA_SESSION_SECRET` | Secret |
+
+Não coloques valores secretos no GitHub, no frontend ou em ficheiros públicos. Depois de adicionar ou alterar variáveis, publica um novo deployment.
+
+### Configurar OAuth Canva
+
+Depois de criares o projecto Pages, copia o domínio real atribuído pela Cloudflare e define exactamente:
+
+`https://TEU-PROJECTO.pages.dev/api/canva?action=callback`
+
+Usa o mesmo URL em `CANVA_REDIRECT_URI` no Cloudflare e na lista de Redirect URLs da aplicação no Canva Developer Portal. Não uses o domínio Netlify antigo.
+
+### Testes após publicação
+
+- `https://TEU-PROJECTO.pages.dev/api/cv-ai` — deve devolver JSON com `service: "cv-ai"` e `status: "ready"`.
+- `https://TEU-PROJECTO.pages.dev/api/canva?action=status` — deve devolver JSON com `service: "canva"` e o estado `configured`.
+- Testa também a ligação OAuth, Design Import, Templates e Autofill. A disponibilidade de Templates e Autofill depende das permissões concedidas pela Canva.
+
+Os dados do currículo, os 13 modelos locais, o armazenamento local, a importação e as exportações continuam no frontend. A integração Canva é opcional e o CVBuilder mantém o funcionamento local mesmo sem credenciais Canva.
