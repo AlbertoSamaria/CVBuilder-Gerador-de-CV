@@ -248,7 +248,7 @@ async function importCVFile(file){
       applyImportedData(parseResumeText(result.value));
     }else if(ext==="pdf"){
       if(!window.pdfjsLib)throw new Error("A biblioteca PDF não carregou. Verifique a ligação à Internet e actualize a página.");
-      pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+      pdfjsLib.GlobalWorkerOptions.workerSrc="./vendor/pdfjs/pdf.worker.min.js";
       const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
       if(pdf.numPages>30)throw new Error("O PDF tem mais de 30 páginas. Utilize um currículo mais curto.");
       let extracted="";
