@@ -145,8 +145,29 @@ function buildPrompt(action, data, jobDescription) {
 }
 
 export default async (request) => {
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": request.headers.get("origin") || "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Cache-Control": "no-store"
+      }
+    });
+  }
+
+  if (request.method === "GET") {
+    return jsonResponse(200, {
+      ok: true,
+      service: "cv-ai",
+      status: "ready",
+      method: "POST"
+    });
+  }
+
   if (request.method !== "POST") {
-    return jsonResponse(405, { error: "Método não permitido." });
+    return jsonResponse(405, { error: "Método não permitido. Use POST." });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
