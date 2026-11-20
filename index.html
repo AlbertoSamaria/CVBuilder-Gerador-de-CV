@@ -24,8 +24,6 @@
       <button class="btn btn-light" id="saveBtn">Guardar</button>
       <button class="btn btn-primary" id="printBtn">Exportar PDF</button>
       <button class="btn btn-light" id="wordBtn" type="button">Exportar Word</button>
-      <button class="btn btn-light canva-top-btn" id="canvaConnectTop" type="button">Ligar Canva</button>
-      <button class="btn btn-primary canva-top-btn" id="canvaCreateTop" type="button" disabled>Criar no Canva</button>
       <button class="btn btn-light" id="themeToggle" type="button" aria-pressed="false">Modo escuro ☾</button>
     </div>
   </header>
@@ -197,58 +195,8 @@
       </section>
 
 
-      <section class="form-section" id="canvaSection">
-        <div class="section-title"><span>11</span><h2>Canva</h2></div>
-        <div class="canva-panel">
-          <div class="canva-heading">
-            <div class="canva-logo">C</div>
-            <div>
-              <strong>Design profissional no Canva</strong>
-              <p>Transforme o currículo actual num documento editável no Canva e continue a personalização no editor.</p>
-            </div>
-          </div>
-          <div class="canva-actions">
-            <button class="btn btn-light" id="canvaConnectBtnPanel" type="button">Ligar conta Canva</button>
-            <button class="btn btn-primary" id="canvaCreateBtnPanel" type="button" disabled>Criar no Canva</button>
-          </div>
-          <div class="canva-status" id="canvaStatus" role="status" aria-live="polite">A verificar ligação ao Canva...</div>
-          <p class="canva-note">A primeira versão usa Design Import: o CVBuilder gera um Word editável e o Canva converte-o num design editável. Os modelos locais continuam disponíveis como fallback.</p>
-        </div>
-      </section>
-
-      <section class="form-section" id="canvaTemplatesSection">
-        <div class="section-title"><span>12</span><h2>Templates Canva</h2></div>
-        <div class="canva-panel">
-          <div class="canva-heading">
-            <div class="canva-logo">C</div>
-            <div>
-              <strong>Templates profissionais + Autofill</strong>
-              <p>Quando a sua conta Canva tiver acesso a Brand Templates, o CVBuilder pode listar templates com campos de dados e preenchê-los automaticamente.</p>
-            </div>
-          </div>
-          <div class="canva-template-toolbar">
-            <input id="canvaTemplateSearch" type="search" maxlength="120" placeholder="Pesquisar templates profissionais...">
-            <button class="btn btn-light" id="canvaLoadTemplatesBtn" type="button">Carregar templates</button>
-          </div>
-          <div class="canva-template-status" id="canvaTemplateStatus" role="status" aria-live="polite"></div>
-          <div class="canva-template-grid" id="canvaTemplateGrid"></div>
-          <div class="canva-autofill-panel" id="canvaAutofillPanel" hidden>
-            <div class="canva-autofill-head">
-              <div>
-                <strong id="canvaSelectedTemplate">Template seleccionado</strong>
-                <p id="canvaDatasetStatus">A preparar os campos...</p>
-              </div>
-              <button class="btn btn-light" id="canvaCloseAutofillBtn" type="button">Fechar</button>
-            </div>
-            <div id="canvaAutofillFields"></div>
-            <button class="btn btn-primary" id="canvaAutofillBtn" type="button">Preencher CV neste template</button>
-            <div class="canva-status" id="canvaAutofillStatus" role="status" aria-live="polite"></div>
-          </div>
-        </div>
-      </section>
-
       <section class="form-section" id="advancedFeatures">
-        <div class="section-title"><span>13</span><h2>Adaptação à vaga</h2></div>
+        <div class="section-title"><span>11</span><h2>Adaptação à vaga</h2></div>
         <div class="feature-panel">
           <h3>Prepare o currículo para uma oportunidade</h3>
           <p>Cole a descrição da vaga. O CVBuilder envia-a ao assistente de IA existente para sugerir uma versão mais alinhada do perfil profissional. A sugestão só é aplicada após a sua confirmação.</p>
@@ -259,7 +207,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>14</span><h2>Editor avançado</h2></div>
+        <div class="section-title"><span>12</span><h2>Editor avançado</h2></div>
         <div class="feature-panel">
           <h3>Ordenar secções do currículo</h3>
           <p>Use as setas para alterar a ordem das secções na pré-visualização. A ordem fica guardada neste navegador.</p>
@@ -267,7 +215,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>15</span><h2>Carta de apresentação</h2></div>
+        <div class="section-title"><span>13</span><h2>Carta de apresentação</h2></div>
         <div class="feature-panel">
           <p>Gere uma primeira versão com base nos dados já preenchidos. Edite o texto antes de o enviar.</p>
           <label for="letterRole">Cargo a que se candidata</label>
@@ -284,7 +232,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>16</span><h2>Histórico de versões</h2></div>
+        <div class="section-title"><span>14</span><h2>Histórico de versões</h2></div>
         <div class="feature-panel">
           <p>Guarde pontos de recuperação antes de fazer alterações importantes. As versões ficam apenas neste navegador.</p>
           <button class="btn btn-primary ai-action" id="saveVersionBtn" type="button">Guardar versão actual</button>
@@ -293,7 +241,7 @@
       </section>
 
       <section class="form-section">
-        <div class="section-title"><span>17</span><h2>Modelos de currículo</h2></div>
+        <div class="section-title"><span>15</span><h2>Modelos de currículo</h2></div>
         <p class="style-help">Escolha um dos 13 modelos. O conteúdo do currículo mantém-se ao mudar de estilo.</p>
         <div class="style-options">
           <button class="style-option active" data-theme="modern" type="button"><span class="theme-swatch theme-modern"></span>Moderno</button>
@@ -391,6 +339,5 @@
   <script src="js/ats.js"></script>
   <script src="js/ai.js"></script>
   <script src="js/features.js"></script>
-  <script src="js/canva.js"></script>
 </body>
 </html>
