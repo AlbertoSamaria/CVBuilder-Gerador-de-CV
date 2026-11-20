@@ -45,6 +45,14 @@
         <div class="progress"><div id="progressBar"></div></div>
       </div>
 
+      <nav class="content-nav no-print" aria-label="Navegação pelas secções do currículo">
+        <strong>Conteúdos do currículo</strong>
+        <div class="content-nav-links">
+          <a href="#content-personal">Dados pessoais</a><a href="#content-summary">Perfil</a><a href="#content-experience">Experiência</a><a href="#content-education">Formação</a><a href="#content-skills">Competências</a><a href="#content-languages">Idiomas</a><a href="#content-certifications">Certificações</a><a href="#content-projects">Projectos</a>
+        </div>
+        <p>Preencha primeiro os dados essenciais. As secções opcionais só aparecem no currículo quando tiverem conteúdo.</p>
+      </nav>
+
       <section class="ats-panel no-print" id="atsPanel" aria-labelledby="atsTitle">
         <div class="ats-heading">
           <div>
@@ -82,8 +90,9 @@
         </div>
       </section>
 
-      <section class="form-section">
-        <div class="section-title"><span>01</span><h2>Informações pessoais</h2></div>
+      <section class="form-section content-section" id="content-personal">
+        <div class="section-title"><span>01</span><h2>Dados pessoais e contacto</h2></div>
+        <p class="section-intro">Identifique-se profissionalmente. Utilize contactos actualizados e um endereço de LinkedIn válido.</p>
         <div class="photo-row">
           <div class="photo-upload" id="photoUpload">
             <img id="photoPreview" alt="Foto do perfil">
@@ -91,63 +100,71 @@
             <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp">
           </div>
           <div class="photo-help">
-            <strong>Foto profissional</strong>
-            <p>JPG ou PNG. Uma fotografia simples e profissional funciona melhor.</p>
+            <strong>Fotografia profissional (opcional)</strong>
+            <p>Prefira uma imagem nítida, recente, com fundo simples. JPG, PNG ou WebP.</p>
             <button class="text-btn" id="removePhotoBtn">Remover foto</button>
           </div>
         </div>
-
         <div class="grid two">
-          <label>Nome completo<input id="fullName" placeholder="Ex.: Alberto Samaria"></label>
-          <label>Cargo / profissão<input id="jobTitle" placeholder="Ex.: Técnico de Informática"></label>
+          <label>Nome completo<input id="fullName" autocomplete="name" placeholder="Ex.: Alberto Samaria"></label>
+          <label>Cargo / profissão pretendida<input id="jobTitle" autocomplete="organization-title" placeholder="Ex.: Técnico de Informática"></label>
         </div>
         <div class="grid two">
-          <label>Email<input id="email" type="email" placeholder="exemplo@email.com"></label>
-          <label>Telefone<input id="phone" placeholder="+244 9XX XXX XXX"></label>
+          <label>Email profissional<input id="email" type="email" autocomplete="email" placeholder="exemplo@email.com"></label>
+          <label>Telefone / WhatsApp<input id="phone" autocomplete="tel" placeholder="+244 9XX XXX XXX"></label>
         </div>
         <div class="grid two">
-          <label>Localização<input id="location" placeholder="Luanda, Angola"></label>
+          <label>Localização<input id="location" autocomplete="address-level2" placeholder="Luanda, Angola"></label>
           <label>LinkedIn<input id="linkedin" placeholder="linkedin.com/in/seunome"></label>
         </div>
-        <label>Perfil profissional<textarea id="summary" rows="4" placeholder="Escreva um resumo profissional curto, destacando experiência, competências e objetivo."></textarea></label>
+      </section>
+      <section class="form-section content-section" id="content-summary">
+        <div class="section-title"><span>02</span><h2>Perfil profissional</h2></div>
+        <p class="section-intro">Apresente uma síntese de 3 a 5 linhas: área de actuação, experiência, competências relevantes e valor que pode acrescentar.</p>
+        <label>Resumo profissional<textarea id="summary" rows="5" maxlength="1200" placeholder="Ex.: Técnico de Informática com experiência em suporte a utilizadores, manutenção de equipamentos e administração básica de redes. Conhecimentos de Windows, PHP e MySQL."></textarea></label>
+        <p class="field-hint">Evite dados pessoais sensíveis, frases genéricas e afirmações que não consiga comprovar.</p>
       </section>
 
-      <section class="form-section">
-        <div class="section-title"><span>02</span><h2>Experiência profissional</h2></div>
-        <div id="experienceForm"></div>
-        <button class="add-btn" id="addExperience">+ Adicionar experiência</button>
+      <section class="form-section content-section" id="content-experience">
+        <div class="section-title"><span>03</span><h2>Experiência profissional</h2></div>
+        <p class="section-intro">Comece pela experiência mais recente. Descreva responsabilidades, ferramentas utilizadas e resultados concretos.</p>
+        <div id="experienceForm"></div><button class="add-btn" id="addExperience">+ Adicionar experiência</button>
+        <p class="field-hint">Se ainda não trabalhou, não invente experiência. Pode destacar projectos académicos ou pessoais no portefólio.</p>
       </section>
-
-      <section class="form-section">
-        <div class="section-title"><span>03</span><h2>Formação académica</h2></div>
-        <div id="educationForm"></div>
-        <button class="add-btn" id="addEducation">+ Adicionar formação</button>
+      <section class="form-section content-section" id="content-education">
+        <div class="section-title"><span>04</span><h2>Formação académica</h2></div>
+        <p class="section-intro">Registe o curso, a instituição e o período. Coloque primeiro a formação mais recente ou em curso.</p>
+        <div id="educationForm"></div><button class="add-btn" id="addEducation">+ Adicionar formação</button>
       </section>
-
-      <section class="form-section">
-        <div class="section-title"><span>04</span><h2>Competências</h2></div>
-        <div class="grid two">
-          <label>Competências técnicas<textarea id="skills" rows="4" placeholder="PHP, MySQL, JavaScript, Git, Redes..."></textarea></label>
-          <label>Competências pessoais<textarea id="softSkills" rows="4" placeholder="Comunicação, liderança, organização..."></textarea></label>
-        </div>
+      <section class="form-section content-section" id="content-skills">
+        <div class="section-title"><span>05</span><h2>Competências técnicas</h2></div>
+        <p class="section-intro">Indique ferramentas, tecnologias, métodos e conhecimentos relevantes para a função.</p>
+        <label>Competências técnicas<textarea id="skills" rows="5" placeholder="PHP, MySQL, JavaScript, Git, redes TCP/IP, Windows Server..."></textarea></label>
+        <p class="field-hint">Separe cada competência por vírgula ou linha. Não inclua tecnologias que ainda não consegue utilizar.</p>
       </section>
-
-      <section class="form-section">
-        <div class="section-title"><span>05</span><h2>Idiomas</h2></div>
-        <div id="languagesForm"></div>
-        <button class="add-btn" id="addLanguage">+ Adicionar idioma</button>
+      <section class="form-section content-section" id="content-soft-skills">
+        <div class="section-title"><span>06</span><h2>Competências pessoais</h2></div>
+        <p class="section-intro">Seleccione características demonstráveis no trabalho, como comunicação, organização, colaboração ou resolução de problemas.</p>
+        <label>Competências pessoais<textarea id="softSkills" rows="4" placeholder="Comunicação, trabalho em equipa, organização, pensamento crítico..."></textarea></label>
       </section>
-
-      <section class="form-section">
-        <div class="section-title"><span>06</span><h2>Extras</h2></div>
-        <div class="grid two">
-          <label>Certificações<textarea id="certifications" rows="3" placeholder="Nome da certificação — Instituição — Ano"></textarea></label>
-          <label>Projetos / Portfólio<textarea id="projects" rows="3" placeholder="Projeto — descrição curta — link"></textarea></label>
-        </div>
+      <section class="form-section content-section" id="content-languages">
+        <div class="section-title"><span>07</span><h2>Idiomas</h2></div>
+        <p class="section-intro">Indique o idioma e o nível real de comunicação. Pode utilizar níveis como básico, intermédio, avançado, C1 ou nativo.</p>
+        <div id="languagesForm"></div><button class="add-btn" id="addLanguage">+ Adicionar idioma</button>
+      </section>
+      <section class="form-section content-section" id="content-certifications">
+        <div class="section-title"><span>08</span><h2>Certificações e cursos</h2></div>
+        <p class="section-intro">Inclua certificações e formações complementares, com entidade emissora e ano sempre que possível.</p>
+        <label>Certificações<textarea id="certifications" rows="4" placeholder="Fundamentos de Redes — Cisco Networking Academy — 2025"></textarea></label>
+      </section>
+      <section class="form-section content-section" id="content-projects">
+        <div class="section-title"><span>09</span><h2>Projectos e portefólio</h2></div>
+        <p class="section-intro">Apresente projectos académicos, pessoais ou profissionais. Explique o objectivo, a sua contribuição, as tecnologias e, se existir, o link.</p>
+        <label>Projectos / Portefólio<textarea id="projects" rows="5" placeholder="CVBuilder — Aplicação web para criação de currículos; PHP, JavaScript e MySQL — https://..."></textarea></label>
       </section>
 
       <section class="form-section" id="aiSection">
-        <div class="section-title"><span>07</span><h2>Assistente de IA</h2></div>
+        <div class="section-title"><span>10</span><h2>Assistente de IA</h2></div>
         <div class="ai-panel">
           <div class="ai-panel-heading">
             <span class="ai-sparkle">✦</span>
@@ -181,7 +198,7 @@
 
 
       <section class="form-section" id="canvaSection">
-        <div class="section-title"><span>08</span><h2>Canva</h2></div>
+        <div class="section-title"><span>11</span><h2>Canva</h2></div>
         <div class="canva-panel">
           <div class="canva-heading">
             <div class="canva-logo">C</div>
@@ -200,7 +217,7 @@
       </section>
 
       <section class="form-section" id="canvaTemplatesSection">
-        <div class="section-title"><span>09</span><h2>Templates Canva</h2></div>
+        <div class="section-title"><span>12</span><h2>Templates Canva</h2></div>
         <div class="canva-panel">
           <div class="canva-heading">
             <div class="canva-logo">C</div>
@@ -231,7 +248,7 @@
       </section>
 
       <section class="form-section" id="advancedFeatures">
-        <div class="section-title"><span>10</span><h2>Adaptação à vaga</h2></div>
+        <div class="section-title"><span>13</span><h2>Adaptação à vaga</h2></div>
         <div class="feature-panel">
           <h3>Prepare o currículo para uma oportunidade</h3>
           <p>Cole a descrição da vaga. O CVBuilder envia-a ao assistente de IA existente para sugerir uma versão mais alinhada do perfil profissional. A sugestão só é aplicada após a sua confirmação.</p>
@@ -242,7 +259,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>11</span><h2>Editor avançado</h2></div>
+        <div class="section-title"><span>14</span><h2>Editor avançado</h2></div>
         <div class="feature-panel">
           <h3>Ordenar secções do currículo</h3>
           <p>Use as setas para alterar a ordem das secções na pré-visualização. A ordem fica guardada neste navegador.</p>
@@ -250,7 +267,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>12</span><h2>Carta de apresentação</h2></div>
+        <div class="section-title"><span>15</span><h2>Carta de apresentação</h2></div>
         <div class="feature-panel">
           <p>Gere uma primeira versão com base nos dados já preenchidos. Edite o texto antes de o enviar.</p>
           <label for="letterRole">Cargo a que se candidata</label>
@@ -267,7 +284,7 @@
         </div>
       </section>
       <section class="form-section">
-        <div class="section-title"><span>13</span><h2>Histórico de versões</h2></div>
+        <div class="section-title"><span>16</span><h2>Histórico de versões</h2></div>
         <div class="feature-panel">
           <p>Guarde pontos de recuperação antes de fazer alterações importantes. As versões ficam apenas neste navegador.</p>
           <button class="btn btn-primary ai-action" id="saveVersionBtn" type="button">Guardar versão actual</button>
@@ -276,7 +293,7 @@
       </section>
 
       <section class="form-section">
-        <div class="section-title"><span>14</span><h2>Modelos de currículo</h2></div>
+        <div class="section-title"><span>17</span><h2>Modelos de currículo</h2></div>
         <p class="style-help">Escolha um dos 13 modelos. O conteúdo do currículo mantém-se ao mudar de estilo.</p>
         <div class="style-options">
           <button class="style-option active" data-theme="modern" type="button"><span class="theme-swatch theme-modern"></span>Moderno</button>

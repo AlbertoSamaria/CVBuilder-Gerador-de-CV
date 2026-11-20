@@ -96,10 +96,16 @@ function renderCV(){
     $("#cvMainLanguages").innerHTML=state.languages.map(x=>'<div class="entry-desc">'+esc(x.name)+(x.level?' — '+esc(x.level):'')+'</div>').join("");
   }
 
-  $("#cvExperience").innerHTML=state.experience.filter(x=>x.title||x.company||x.description).map(x=>`
-    <div class="entry"><div class="entry-head"><div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.company)}</div></div><div class="entry-date">${esc(x.date)}</div></div>
-    <div class="entry-desc">${esc(x.description)}</div></div>`).join("");
-  $("#cvExperienceSection").style.display=state.experience.some(x=>x.title||x.company||x.description)?"":"none";
+  $("#cvExperience").innerHTML=state.experience.filter(x=>x.title||x.company||x.description||x.location).map(x=>`
+    <div class="entry">
+      <div class="entry-head">
+        <div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.company)}</div></div>
+        <div class="entry-date">${esc(x.date)}</div>
+      </div>
+      ${x.location?`<div class="entry-meta">${esc(x.location)}</div>`:""}
+      ${x.description?`<div class="entry-desc">${esc(x.description)}</div>`:""}
+    </div>`).join("");
+  $("#cvExperienceSection").style.display=state.experience.some(x=>x.title||x.company||x.description||x.location)?"":"none";
 
   $("#cvEducation").innerHTML=state.education.filter(x=>x.title||x.school).map(x=>`
     <div class="entry"><div class="entry-head"><div><div class="entry-title">${esc(x.title)}</div><div class="entry-company">${esc(x.school)}</div></div><div class="entry-date">${esc(x.date)}</div></div></div>`).join("");
