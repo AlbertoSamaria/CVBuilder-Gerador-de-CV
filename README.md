@@ -4,10 +4,12 @@ Gerador de currículos moderno, responsivo e estático, com processamento de doc
 
 ## Funcionalidades
 
+- Formulário organizado por secções: dados pessoais, perfil, experiência, formação, competências, idiomas, certificações e portefólio
+- Navegação rápida entre secções do formulário
 - Formulário completo para dados pessoais
 - Foto de perfil
 - Perfil profissional
-- Experiência profissional
+- Experiência profissional com cargo, empresa, período, localização e descrição
 - Formação académica
 - Competências técnicas e pessoais
 - Idiomas
