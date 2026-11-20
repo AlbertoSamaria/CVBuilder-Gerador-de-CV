@@ -212,3 +212,25 @@ label{display:block;font-size:11px;font-weight:800;color:#475467;margin-bottom:1
 #cvFileInput[hidden] {
     display: none !important;
 }
+
+/* Organização e navegação dos conteúdos do currículo */
+.content-nav{padding:13px;margin:0 0 18px;border:1px solid var(--border);border-radius:12px;background:#f8faff}
+.content-nav>strong{display:block;font-size:12px;margin-bottom:9px;color:var(--text)}
+.content-nav-links{display:flex;flex-wrap:wrap;gap:6px}
+.content-nav-links a{display:inline-flex;align-items:center;padding:7px 9px;border:1px solid #dbe4f0;border-radius:8px;background:#fff;color:#2455a6;text-decoration:none;font-size:11px;font-weight:700}
+.content-nav-links a:hover,.content-nav-links a:focus-visible{border-color:var(--primary);background:#eef4ff;outline:2px solid transparent}
+.content-nav p,.section-intro,.field-hint{font-size:11px;line-height:1.55;color:var(--muted)}
+.content-nav p{margin-top:9px}
+.section-intro{margin:-7px 0 14px;max-width:680px}
+.field-hint{margin-top:7px}
+.content-section{scroll-margin-top:88px}
+.entry-meta{font-size:10px;color:#667085;margin-top:3px}
+@media(max-width:650px){
+ .content-nav{padding:11px}
+ .content-nav-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .content-nav-links a{justify-content:center;text-align:center;min-height:36px}
+}
+body.dark-mode .content-nav{background:#172235;border-color:#475569}
+body.dark-mode .content-nav>strong{color:#f8fafc}
+body.dark-mode .content-nav-links a{background:#0f172a;border-color:#475569;color:#bfdbfe}
+body.dark-mode .section-intro,body.dark-mode .field-hint,body.dark-mode .content-nav p{color:#cbd5e1}
