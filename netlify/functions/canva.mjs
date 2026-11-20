@@ -374,10 +374,10 @@ export default async function handler(request) {
       const file = form.get("file");
 
       if (!file || typeof file.arrayBuffer !== "function") {
-        return json(400, { error: "Seleccione um ficheiro PDF ou Word." });
+        return sessionResponse(session, { error: "Seleccione um ficheiro PDF ou Word." }, 400);
       }
       if (file.size > 15 * 1024 * 1024) {
-        return json(413, { error: "O ficheiro excede o limite de 15 MB." });
+        return sessionResponse(session, { error: "O ficheiro excede o limite de 15 MB." }, 413);
       }
 
       const allowed = [
@@ -387,7 +387,7 @@ export default async function handler(request) {
       ];
 
       if (file.type && !allowed.includes(file.type)) {
-        return json(400, { error: "Para o Canva, use PDF ou Word (.doc/.docx)." });
+        return sessionResponse(session, { error: "Para o Canva, use PDF ou Word (.doc/.docx)." }, 400);
       }
 
       const title = String(form.get("title") || file.name || "CVBuilder")
@@ -411,7 +411,7 @@ export default async function handler(request) {
 
       const jobId = created?.job?.id;
       if (!jobId) {
-        return json(502, { error: "Canva não devolveu o ID do trabalho de importação." });
+        return sessionResponse(session, { error: "Canva não devolveu o ID do trabalho de importação." }, 502);
       }
 
       return sessionResponse(session, {
@@ -426,7 +426,7 @@ export default async function handler(request) {
 
   if (request.method === "GET" && action === "import-status") {
     const jobId = url.searchParams.get("jobId");
-    if (!jobId) return json(400, { error: "ID de importação em falta." });
+    if (!jobId) return sessionResponse(session, { error: "ID de importação em falta." }, 400);
 
     try {
       const data = await canvaRequest("/imports/" + encodeURIComponent(jobId), session.access_token);
@@ -450,7 +450,7 @@ export default async function handler(request) {
 
   if (request.method === "GET" && action === "template-dataset") {
     const templateId = url.searchParams.get("templateId");
-    if (!templateId) return json(400, { error: "ID do template em falta." });
+    if (!templateId) return sessionResponse(session, { error: "ID do template em falta." }, 400);
 
     try {
       const data = await canvaRequest("/brand-templates/" + encodeURIComponent(templateId) + "/dataset", session.access_token);
@@ -464,11 +464,11 @@ export default async function handler(request) {
     try {
       const body = await request.json();
       const templateId = typeof body?.brandTemplateId === "string" ? body.brandTemplateId.trim() : "";
-      if (!templateId) return json(400, { error: "ID do template Canva em falta." });
+      if (!templateId) return sessionResponse(session, { error: "ID do template Canva em falta." }, 400);
 
       const data = normalizeAutofillData(body?.data);
       if (!Object.keys(data).length) {
-        return json(400, { error: "Nenhum campo válido foi enviado para o Autofill." });
+        return sessionResponse(session, { error: "Nenhum campo válido foi enviado para o Autofill." }, 400);
       }
 
       const created = await canvaRequest("/autofills", session.access_token, {
@@ -493,7 +493,7 @@ export default async function handler(request) {
 
   if (request.method === "GET" && action === "autofill-status") {
     const jobId = url.searchParams.get("jobId");
-    if (!jobId) return json(400, { error: "ID do Autofill em falta." });
+    if (!jobId) return sessionResponse(session, { error: "ID do Autofill em falta." }, 400);
 
     try {
       const data = await canvaRequest("/autofills/" + encodeURIComponent(jobId), session.access_token);
