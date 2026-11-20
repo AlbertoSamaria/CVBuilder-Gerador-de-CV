@@ -213,11 +213,20 @@ function clearSessionHeaders() {
   return { "Set-Cookie": cookie("cv_canva_session", "", { maxAge: 0 }) };
 }
 
-async function sessionResponse(session, payload, status = 200) {
+async function sessionResponse(session, payload, status = 200, extraHeaders = {}) {
   const encrypted = await encryptSession(session);
   return json(status, payload, {
+    ...extraHeaders,
     "Set-Cookie": cookie("cv_canva_session", encrypted, { maxAge: 60 * 60 * 24 * 30 })
   });
+}
+
+async function sessionErrorResponse(session, error, fallback, status = 502) {
+  const message = error?.message || fallback;
+  if (error?.status === 401) {
+    return json(401, { error: message }, clearSessionHeaders());
+  }
+  return sessionResponse(session, { error: message }, status);
 }
 
 function normalizeAutofillData(value) {
@@ -256,7 +265,7 @@ export default async function handler(request) {
   if (request.method === "GET" && action === "status") {
     const configured = Boolean(cfg.clientId && cfg.clientSecret && cfg.redirectUri && cfg.sessionSecret);
     const session = configured ? await getSession(request) : null;
-    return json(200, {
+    const payload = {
       ok: true,
       service: "canva",
       configured,
@@ -266,7 +275,8 @@ export default async function handler(request) {
         brandTemplates: true,
         autofill: true
       }
-    });
+    };
+    return session?.access_token ? sessionResponse(session, payload) : json(200, payload);
   }
 
   if (request.method === "GET" && action === "authorize") {
@@ -404,16 +414,13 @@ export default async function handler(request) {
         return json(502, { error: "Canva não devolveu o ID do trabalho de importação." });
       }
 
-      session = await getSession(request) || session;
       return sessionResponse(session, {
         jobId,
         status: created?.job?.status || "in_progress"
       }, 200);
     } catch (error) {
       console.error("Canva import failed", error);
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível importar o currículo para o Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível importar o currículo para o Canva.");
     }
   }
 
@@ -423,11 +430,9 @@ export default async function handler(request) {
 
     try {
       const data = await canvaRequest("/imports/" + encodeURIComponent(jobId), session.access_token);
-      return json(200, data);
+      return sessionResponse(session, data);
     } catch (error) {
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível consultar a importação Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível consultar a importação Canva.");
     }
   }
 
@@ -437,11 +442,9 @@ export default async function handler(request) {
       const params = new URLSearchParams({ limit: "50", dataset: "non_empty" });
       if (query) params.set("query", query);
       const data = await canvaRequest("/brand-templates?" + params.toString(), session.access_token);
-      return json(200, data);
+      return sessionResponse(session, data);
     } catch (error) {
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível carregar os templates Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível carregar os templates Canva.");
     }
   }
 
@@ -451,11 +454,9 @@ export default async function handler(request) {
 
     try {
       const data = await canvaRequest("/brand-templates/" + encodeURIComponent(templateId) + "/dataset", session.access_token);
-      return json(200, data);
+      return sessionResponse(session, data);
     } catch (error) {
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível obter os campos do template Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível obter os campos do template Canva.");
     }
   }
 
@@ -480,15 +481,13 @@ export default async function handler(request) {
         })
       });
 
-      return json(200, {
+      return sessionResponse(session, {
         jobId: created?.job?.id,
         status: created?.job?.status || "in_progress"
       });
     } catch (error) {
       console.error("Canva autofill failed", error);
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível iniciar o Autofill Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível iniciar o Autofill Canva.");
     }
   }
 
@@ -498,11 +497,9 @@ export default async function handler(request) {
 
     try {
       const data = await canvaRequest("/autofills/" + encodeURIComponent(jobId), session.access_token);
-      return json(200, data);
+      return sessionResponse(session, data);
     } catch (error) {
-      return json(error.status === 401 ? 401 : 502, {
-        error: error.message || "Não foi possível consultar o Autofill Canva."
-      }, error.status === 401 ? clearSessionHeaders() : {});
+      return sessionErrorResponse(session, error, "Não foi possível consultar o Autofill Canva.");
     }
   }
 
