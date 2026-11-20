@@ -279,6 +279,15 @@ export default async function handler(request) {
     const verifier = randomString(64);
     const challenge = bytesToBase64Url(new Uint8Array(await sha256(verifier)));
     const state = randomString(48);
+    const oauthState = await encryptSession({
+      state,
+      verifier,
+      expires_at: Date.now() + 10 * 60 * 1000
+    });
+
+    if (!oauthState) {
+      return json(500, { error: "Não foi possível proteger a sessão OAuth do Canva." });
+    }
 
     const params = new URLSearchParams({
       code_challenge: challenge,
@@ -294,7 +303,7 @@ export default async function handler(request) {
       status: 302,
       headers: {
         Location: CANVA_AUTHORIZE_URL + "?" + params.toString(),
-        "Set-Cookie": cookie("cv_canva_oauth", JSON.stringify({ state, verifier }), { maxAge: 600 })
+        "Set-Cookie": cookie("cv_canva_oauth", oauthState, { maxAge: 600 })
       }
     });
   }
@@ -302,14 +311,13 @@ export default async function handler(request) {
   if (request.method === "GET" && action === "callback") {
     const code = url.searchParams.get("code");
     const returnedState = url.searchParams.get("state");
-    const storedRaw = getCookie(request, "cv_canva_oauth");
-    let stored = {};
-    try {
-      stored = JSON.parse(storedRaw || "{}");
-    } catch {}
+    const stored = await decryptSession(getCookie(request, "cv_canva_oauth")) || {};
+    const oauthExpired = !stored.expires_at || Date.now() > Number(stored.expires_at);
 
-    if (!cfg.clientId || !code || !returnedState || !stored.state || returnedState !== stored.state || !stored.verifier) {
-      return json(400, { error: "OAuth Canva inválido ou expirado. Inicie a ligação novamente." });
+    if (!cfg.clientId || !code || !returnedState || !stored.state || returnedState !== stored.state || !stored.verifier || oauthExpired) {
+      return json(400, { error: "OAuth Canva inválido ou expirado. Inicie a ligação novamente." }, {
+        "Set-Cookie": cookie("cv_canva_oauth", "", { maxAge: 0 })
+      });
     }
 
     try {
@@ -339,7 +347,9 @@ export default async function handler(request) {
       });
     } catch (error) {
       console.error("Canva OAuth callback failed", error);
-      return json(502, { error: error.message || "Não foi possível concluir a ligação ao Canva." });
+      return json(502, { error: error.message || "Não foi possível concluir a ligação ao Canva." }, {
+        "Set-Cookie": cookie("cv_canva_oauth", "", { maxAge: 0 })
+      });
     }
   }
 
